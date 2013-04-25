@@ -8759,17 +8759,17 @@ Crafty.extend({
 */
 Crafty.c("Text", {
 	_text: "",
-	_textFont: {
-		"type": "",
-		"weight": "",
-		"size": "",
-		"family": ""
-	},
+	
 	ready: true,
 
 	init: function () {
 		this.requires("2D");
-
+		this._textFont = {
+			"type": "",
+			"weight": "",
+			"size": "",
+			"family": ""
+		};
 		this.bind("Draw", function (e) {
 			var font = this._textFont["type"] + ' ' + this._textFont["weight"] + ' ' +
 				this._textFont["size"] + ' ' + this._textFont["family"];

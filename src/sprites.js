@@ -13,15 +13,37 @@
 Sprites = Backbone.Model.extend({
     defaults: {
         images:{
-			'manaCard' : {
-				'file' : 'web/images/mana-card.png',
+			'manaCardL' : {
+				'file' : 'web/images/mana-card-l.png',
 				'tile' : 100,
 				'tileh' : 160,
 				'elements': {
-					'suit1' : [0, 0],
-					'suit2' : [1, 0],
-					'suit3' : [2, 0],
-					'suit4' : [3, 0],
+					'L-suit1' : [0, 0],
+					'L-suit2' : [1, 0],
+					'L-suit3' : [2, 0],
+					'L-suit4' : [3, 0],
+				}
+			},
+			'manaCardM' : {
+				'file' : 'web/images/mana-card-m.png',
+				'tile' : 50,
+				'tileh' : 80,
+				'elements': {
+					'M-suit1' : [0, 0],
+					'M-suit2' : [1, 0],
+					'M-suit3' : [2, 0],
+					'M-suit4' : [3, 0],
+				}
+			},
+			'manaCardS' : {
+				'file' : 'web/images/mana-card-s.png',
+				'tile' : 25,
+				'tileh' : 40,
+				'elements': {
+					'S-suit1' : [0, 0],
+					'S-suit2' : [1, 0],
+					'S-suit3' : [2, 0],
+					'S-suit4' : [3, 0],
 				}
 			},
 			'summonField' : {
@@ -29,7 +51,8 @@ Sprites = Backbone.Model.extend({
 				'tile' : 200,
 				'tileh' : 100,
 				'elements': {
-					'SummonFieldEmpty' : [0, 0]
+					'SummonFieldEmpty' : [0, 0],
+					'SummonFieldValid' : [0, 1]
 				}
 			},			
         }
