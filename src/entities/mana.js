@@ -1,15 +1,15 @@
-NumMap = ["A", 2,3,4,5,6,7,8,9,10,"J","Q","K"];
-FontMap = {
+CONST.NumMap = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"];
+CONST.FontMap = {
 	"S":"12px",
 	"M":"28px",
 	"L":"52px"
 };
-offsetXMap = {
+CONST.OFFSET_X_MAP = {
 	"S":8,
 	"M":16,
 	"L":32
 };
-offsetYMap = {
+CONST.OFFSET_Y_MAP = {
 	"S":-3,
 	"M":12,
 	"L":40
@@ -40,7 +40,7 @@ Crafty.c("ManaCard", {
 		if ( ret = this.hit('SummonField')) {
 			var field = ret[0].obj;
 			if ( Math.abs(field.x+field._origin.x - this.x - this._origin.x)<field.w/2 && Math.abs(field.y+field._origin.y - this.y-this._origin.y)<field.h/2 ) {
-				field.cards.add(this.model);
+				field.addMana(this.model);
 				this.onDie();
 			}
 		}
@@ -55,22 +55,39 @@ Crafty.c("ManaCard", {
 		this.origin(this.w/2, this.h/2);
 		this.model.on("destroy",this.onDie,this);
 
+		if ( options.size === "L" ){
+			this.attr({
+				w:100,
+				h:160
+			});
+		} else if ( options.size === "M" ){
+			this.attr({
+				w:50,
+				h:80
+			});
+		} else if ( options.size === "S" ){
+			this.attr({
+				w:25,
+				h:40
+			});
+		}
+		
 		if ( !options.fix ) {
-			this.addComponent("Draggable","Collision")
+			this.addComponent("Draggable","Collision","ManaCardActive")
 				.bind("StartDrag",this._onStartDrag)
 				.bind("StopDrag",this._onStopDrag);
 		}
 
-		this.addComponent(this.attr("size")+"-suit"+this.attr("suit"));
-		this.offsetX = offsetXMap[this.attr("size")];
-		this.offsetY = offsetYMap[this.attr("size")];;
+		this.addComponent(options.size+"-suit"+this.attr("suit"));
+		this.offsetX = CONST.OFFSET_X_MAP[options.size];
+		this.offsetY = CONST.OFFSET_Y_MAP[options.size];
 
-		var num = NumMap[this.attr("number")-1];
+		var num = CONST.NumMap[this.attr("number")-2];
 		this.numberEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
 			.attr({w: 20, h: 20, x: this.x + this.offsetX, y: this.y + this.offsetY, z: this.z})
 					.text(num)
 					.textColor('#000')
-					.textFont({'size' : FontMap[this.attr("size")], 'family': 'Arial'});
+					.textFont({'size' : CONST.FontMap[options.size], 'family': 'Arial'});
 		return this;
 	},
 	onDie:function(){
@@ -81,31 +98,123 @@ Crafty.c("ManaCard", {
 
 ManaCard = BaseEntity.extend({
 	defaults: {
-		number:1,
+		number:2,
 		suit:1,
 		x:0,
-		y:0
+		y:0,
+		owner:1
     },
-    initialize: function(){
-		if ( this.get("size") === "L" ){
-			this.set({
-				w:100,
-				h:160
-			});
-		} else if ( this.get("size") === "M" ){
-			this.set({
-				w:50,
-				h:80
-			});
-		} else if ( this.get("size") === "S" ){
-			this.set({
-				w:25,
-				h:40
-			});
-		}
+    initialize: function(){		
     }
 });
 
+
+CONST.STRAIGHT_MAP = {
+		"2-3-14":true,
+		"2-3-4":true,
+		"3-4-5":true,
+		"4-5-6":true,
+		"5-6-7":true,
+		"6-7-8":true,
+		"7-8-9":true,
+		"8-9-10":true,
+		"9-10-11":true,
+		"10-11-12":true,
+		"11-12-13":true,
+		"12-13-14":true,
+
+		"2-3-4-14":true,
+		"3-4-5-6":true,
+		"4-5-6-7":true,
+		"5-6-7-8":true,
+		"6-7-8-9":true,
+		"7-8-9-10":true,
+		"8-9-10-11":true,
+		"9-10-11-12":true,
+		"10-11-12-13":true,
+		"11-12-13-14":true,
+
+		"2-3-4-5-14":true,
+		"3-4-5-6-7":true,
+		"4-5-6-7-8":true,
+		"5-6-7-8-9":true,
+		"6-7-8-9-10":true,
+		"7-8-9-10-11":true,
+		"8-9-10-11-12":true,
+		"9-10-11-12-13":true,
+		"10-11-12-13-14":true
+	};
+
 ManaCollection = Backbone.Collection.extend({
-	model:ManaCard
+	model:ManaCard,
+
+	isStraight:function(){
+		if (this.length<=2)
+			return false;
+		var v = this.map ( function(card){
+			return card.get("number");
+		}).join("-");
+		return STRAIGHT_MAP[v];
+	},
+	isSameNumber:function(){
+		var v = this.at(0).get("number");
+		for ( var i = 1; i < this.length ; i++ ){
+			if ( v != this.at(i).get("number") )
+				return false;
+		}
+		return true;
+	},
+	isSameSuit:function(){
+		var v = this.at(0).get("suit");
+		for ( var i = 1; i < this.length ; i++ ){
+			if ( v != this.at(i).get("suit") )
+				return false;
+		}
+		return true;
+	},
+	isPair:function(){
+		if ( this.length % 2 === 1)
+			return false;
+		for ( var i = 0; i < this.length/2 ; i++ ){
+			if ( this.at(i*2).get("number") != this.at(i*2+1).get("number"))
+				return false;
+		}
+		return true;
+	},
+	isFullHouse:function(){
+		if ( this.length != 5 )
+			return false;
+		if ( (this.at(0).get("number") === this.at(1).get("number") && 
+		     this.at(0).get("number") === this.at(2).get("number") &&
+		     this.at(3).get("number") === this.at(4).get("number")) ||
+		     (this.at(0).get("number") === this.at(1).get("number") && 
+		     this.at(2).get("number") === this.at(3).get("number") &&
+		     this.at(3).get("number") === this.at(4).get("number")) )
+			return true;
+		return false;
+	},
+	feature:function(){
+		var ret = {};
+		if (this.length<=1)
+			return ret;
+		if ( this.isStraight() ){
+			ret.straight = this.length;
+		}
+		if ( this.isSameNumber() ){
+			ret.number = this.length;
+		}
+		if ( this.isSameSuit() ){
+			ret.suit = this.length;
+		}
+		if ( this.isPair() ){
+			ret.pair = this.length/2;
+		}
+		if ( this.isFullHouse() ){
+			ret.fullHouse = true;
+		}
+		return ret;
+	},
+	comparator:function(model){
+		return model.get("number");
+	}
 });

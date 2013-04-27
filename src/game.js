@@ -28,6 +28,7 @@ window.onload = function() {
 		Crafty.scene("loading", function() {
             // clear scene and interface
             sc = []; infc = [];   dialogues = [];
+			CONST = {};
 
 			var loadingText = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
 					.attr({w: 500, h: 20, x: ((Crafty.viewport.width) / 2), y: (Crafty.viewport.height / 2), z: 2})
