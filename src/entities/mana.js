@@ -93,7 +93,7 @@ Crafty.c("ManaCard", {
 	}
 });
 
-ManaCard = BaseEntity.extend({
+ManaCard = Backbone.Model.extend({
 	defaults: {
 		number:2,
 		suit:1,
@@ -151,7 +151,7 @@ ManaCollection = Backbone.Collection.extend({
 		var v = this.map ( function(card){
 			return card.get("number");
 		}).join("-");
-		return STRAIGHT_MAP[v];
+		return CONST.STRAIGHT_MAP[v];
 	},
 	isSameNumber:function(){
 		var v = this.at(0).get("number");
@@ -207,7 +207,7 @@ ManaCollection = Backbone.Collection.extend({
 			ret.pair = this.length/2;
 		}
 		if ( this.isFullHouse() ){
-			ret.fullHouse = true;
+			ret.fullHouse = 1;
 		}
 		return ret;
 	},

@@ -75,6 +75,46 @@ Sprites = Backbone.Model.extend({
 					'S-chip-v' : [2, 0],
 				}
 			},
+			'skeletonWarriorS' : {
+				'file' : 'web/images/skeleton-warrior-s.png',
+				'tile' : 60,
+				'tileh' : 60,
+				'elements': {
+					'S-skeleton-warrior' : [0, 0]
+				}
+			},
+			'skeletonWarriorMenu' : {
+				'file' : 'web/images/skeleton-warrior-menu.png',
+				'tile' : 60,
+				'tileh' : 60,
+				'elements': {
+					'Menu-skeleton-warrior' : [0, 0]
+				}
+			},
+			'skeletonWarriorL' : {
+				'file' : 'web/images/skeleton-warrior-l.png',
+				'tile' : 300,
+				'tileh' : 300,
+				'elements': {
+					'L-skeleton-warrior' : [0, 0]
+				}
+			},
+			"hpIcon":{
+				'file' : 'web/images/hp-icon.png',
+				'tile' : 24,
+				'tileh' : 24,
+				'elements': {
+					'Hp-icon' : [0, 0]
+				}
+			},
+			"attIcon":{
+				'file' : 'web/images/attack-icon.png',
+				'tile' : 24,
+				'tileh' : 24,
+				'elements': {
+					'Att-icon' : [0, 0]
+				}
+			}
         }
     },
     initialize: function(){

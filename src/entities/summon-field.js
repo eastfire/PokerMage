@@ -37,17 +37,23 @@ Crafty.c("SummonField", {
 		this.addComponent("SummonFieldValid").removeComponent("SummonFieldEmpty");
 	},	
 	_onClicked:function(event){
-		this.summonCreature();
+		var spells = book[this.owner].getValidSpells(this.manas.feature());
+		if ( spells.length ) {
+			Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenu")
+				.summonMenu({
+					spells: spells,
+					summonField:this
+				});
+		}
+		//this.summonCreature();
 	},
 	summonCreature:function(creatureSpell){
-		if ( this.manas.feature().pair === 1 ){
-			this.manas.each(function(model){
-				model.destroy();
-			});
-			var creature = new Creature({x:this.x,y:this.y,z:2,owner:this.owner});
-			Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Creature, Tween")
-					.creature({model: creature});
-		}
+		var len = this.manas.length;
+		for ( var i=0; i<len ; i++ )
+			this.manas.pop().destroy();
+		var creature = new Creature({x:this.x+50,y:this.y,z:2,owner:this.owner,spell:creatureSpell});
+		Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Creature, Tween")
+				.creature({model: creature});
 	},
 	summonField:function(options){
 		this.model = options.model;
@@ -78,7 +84,7 @@ Crafty.c("SummonField", {
 	}
 });
 
-SummonField = BaseEntity.extend({
+SummonField = Backbone.Model.extend({
 	defaults: {
 		w:200,
 		h:100,
@@ -91,4 +97,65 @@ SummonField = BaseEntity.extend({
 
 SummonFieldCollection = Backbone.Collection.extend({
 	model:SummonField
+});
+
+Crafty.c("SummonMenuItem", {
+	init:function(){
+
+	},
+	_onClicked:function(event){
+		this.menu.onDie();
+		this.summonField.summonCreature(this.spell);
+	},
+	summonMenuItem:function(options){
+		this.spell = options.spell;
+		this.menu = options.menu;
+		this.summonField = options.summonField;
+		this.addComponent("Mouse")
+			.bind('Click', this._onClicked);
+
+		return this;
+	},	
+	onDie:function(){
+		this.destroy();
+	}
+});
+
+Crafty.c("SummonMenu", {
+	init:function(){
+
+	},
+	summonMenu:function(options){
+		this.spells = options.spells;
+		if ( !this.spells.length )
+			return;
+		this.summonField = options.summonField;
+		this.spellMenuItems = [];
+
+		var left = this.summonField.x + this.summonField.w/2-(this.spells.length/2)*66;
+		var top = this.summonField.y + this.summonField.h/2 - 30 ;
+		_.each( this.spells, function(spell){
+			var item = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenuItem, Menu-"+spell.get("name"))
+				.summonMenuItem({
+					spell:spell,
+					menu:this,
+					summonField:options.summonField
+				})
+				.attr({
+					x:left,
+					y:top,
+					z:101
+				});
+			this.spellMenuItems.push(item);
+			left += 66;
+		},this);
+		return this;
+	},
+	
+	onDie:function(){
+		_.each( this.spellMenuItems,function(item){
+			item.onDie();
+		});
+		this.destroy();
+	}
 });
