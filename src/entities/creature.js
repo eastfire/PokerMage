@@ -13,6 +13,7 @@ Crafty.c("Creature", {
 		this.origin(this.w/2, this.h/2);
 		this.model.on("destroy",this.onDie,this);
 
+		this.addComponent("S-chip-"+this.owner);
 		this.attr(options).bind('EnterFrame', this._enterFrame).bind('Click', this._onClicked);
 		
 		return this;
@@ -37,7 +38,9 @@ Creature = BaseEntity.extend({
 		owner: 1,
         hp : 1,
 		att : 1,
-		speed: 1
+		speed: 1,
+		w:100,
+		h:100
     },
     initialize: function(){
     }

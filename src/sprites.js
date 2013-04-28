@@ -54,7 +54,27 @@ Sprites = Backbone.Model.extend({
 					'SummonFieldEmpty' : [0, 0],
 					'SummonFieldValid' : [0, 1]
 				}
-			},			
+			},
+			'chipL' : {
+				'file' : 'web/images/chip-l.png',
+				'tile' : 500,
+				'tileh' : 500,
+				'elements': {
+					'L-chip-1' : [0, 0],
+					'L-chip-2' : [1, 0],
+					'L-chip-v' : [2, 0],
+				}
+			},
+			'chipS' : {
+				'file' : 'web/images/chip-s.png',
+				'tile' : 100,
+				'tileh' : 100,
+				'elements': {
+					'S-chip-1' : [0, 0],
+					'S-chip-2' : [1, 0],
+					'S-chip-v' : [2, 0],
+				}
+			},
         }
     },
     initialize: function(){

@@ -37,14 +37,24 @@ Crafty.c("SummonField", {
 		this.addComponent("SummonFieldValid").removeComponent("SummonFieldEmpty");
 	},	
 	_onClicked:function(event){
-
+		this.summonCreature();
+	},
+	summonCreature:function(creatureSpell){
+		if ( this.manas.feature().pair === 1 ){
+			this.manas.each(function(model){
+				model.destroy();
+			});
+			var creature = new Creature({x:this.x,y:this.y,z:2,owner:this.owner});
+			Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Creature, Tween")
+					.creature({model: creature});
+		}
 	},
 	summonField:function(options){
 		this.model = options.model;
 		this.manas = new ManaCollection();
 		this.manaEntities = {};
 
-		this.addComponent("SummonFieldEmpty","Collision");
+		this.addComponent("SummonFieldEmpty","Collision","Mouse");
 		this.attr(this.model.toJSON())
 			.bind('EnterFrame', this._enterFrame)
 			.bind('Click', this._onClicked)

@@ -1,7 +1,8 @@
 Crafty.scene("battle", function() {
 	var elements = [
 		"src/entities/mana.js",
-		"src/entities/summon-field.js"
+		"src/entities/summon-field.js",
+		"src/entities/creature.js"
 	];	
 
 	var self =this;

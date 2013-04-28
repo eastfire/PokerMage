@@ -21,8 +21,6 @@ Crafty.c("ManaCard", {
 	_enterFrame:function(){
 		this.numberEntity.attr({x:this.x+this.offsetX,y:this.y+this.offsetY, z:this.z});
 	},
-	_onClicked:function(event){
-	},
 	_onStartDrag:function(event){
 		this.isDragging = true;
 		this.originX = this.x;
@@ -51,7 +49,6 @@ Crafty.c("ManaCard", {
 		this.model = options.model;
 		this.attr(this.model.toJSON())
 			.bind('EnterFrame', this._enterFrame)
-			.bind('Click', this._onClicked)
 		this.origin(this.w/2, this.h/2);
 		this.model.on("destroy",this.onDie,this);
 
