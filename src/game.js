@@ -9,8 +9,10 @@ window.onload = function() {
 		version = gameContainer.gameVersion;
 	};
     
+	window.GAME_WIDTH = 1280;
+	window.GAME_HEIGHT = 720;
 	//start Crafty
-	Crafty.init(1280, 720);
+	Crafty.init(GAME_WIDTH, GAME_HEIGHT);
 	Crafty.canvas.init();
 	
 	require([
