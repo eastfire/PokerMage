@@ -5,7 +5,7 @@ CONST.FontMap = {
 	"L":"52px"
 };
 CONST.OFFSET_X_MAP = {
-	"S":8,
+	"S":9,
 	"M":16,
 	"L":32
 };
