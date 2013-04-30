@@ -114,6 +114,15 @@ Sprites = Backbone.Model.extend({
 				'elements': {
 					'Att-icon' : [0, 0]
 				}
+			},
+			"treasureHoard":{
+				'file' : 'web/images/treasure-hoard.png',
+				'tile' : 160,
+				'tileh' : 110,
+				'elements': {
+					'TreasureHoardOk' : [0, 0],
+					'TreasureHoardForbiden' : [1, 0]
+				}
 			}
         }
     },
