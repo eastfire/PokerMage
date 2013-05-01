@@ -53,8 +53,8 @@ Crafty.c("SummonField", {
 		for ( var i=0; i<len ; i++ )
 			this.manas.pop().destroy();
 		var creature = new Creature({x:this.x+50,y:this.y,z:2,owner:this.owner,spell:creatureSpell});
-		Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Creature, Tween")
-				.creature({model: creature});
+		Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature, Tween")
+				.chip({model: creature}).creature({model: creature}).tween({y:this.y-100},10);
 	},
 	summonField:function(options){
 		this.model = options.model;
@@ -78,6 +78,10 @@ Crafty.c("SummonField", {
 	_onAddMana:function(model,collection,options){
 		this.manaEntities[model.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", ManaCard")
 					.manaCard({model: model, fix:true, size:"S"});
+	},
+	
+	_onRemoveMana:function(model,collection,options){
+		//handled by mana itsself
 	},
 	
 	onDie:function(){

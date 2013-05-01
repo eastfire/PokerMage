@@ -15,6 +15,6 @@ Unlockable = Backbone.Model.extend({
 	},
 });
 
-UnlockCollection = Backbone.Collection.extend({
+UnlockableCollection = Backbone.Collection.extend({
 	model : Unlockable
 });

@@ -1,11 +1,12 @@
 Spell = Backbone.Model.extend({
+	idAttribute:"name",
 	defaults: {
 		cost: "pair",
 		amount:"1",
 		name:"",
 		label:"",
-		type:"creature",
-		owner:1
+		type:"creature",//creature-enchantment, player-enchantment, battle-field-enchantment, summon-field-enchantment, sorcery
+		effect:null
     },
     initialize: function(){
     }

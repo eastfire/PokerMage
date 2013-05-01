@@ -63,6 +63,11 @@ Sprites = Backbone.Model.extend({
 					'L-chip-1' : [0, 0],
 					'L-chip-2' : [1, 0],
 					'L-chip-v' : [2, 0],
+					'L-chip-creature' : [0, 0],
+					'L-chip-sorcery' : [1, 0],
+					'L-chip-creature-enchantment' : [2, 0],
+					'L-chip-battle-field-enchantment' : [2, 0],
+					'L-chip-summon-field-enchantment' : [2, 0],
 				}
 			},
 			'chipS' : {
@@ -73,6 +78,11 @@ Sprites = Backbone.Model.extend({
 					'S-chip-1' : [0, 0],
 					'S-chip-2' : [1, 0],
 					'S-chip-v' : [2, 0],
+					'S-chip-creature' : [0, 0],
+					'S-chip-sorcery' : [1, 0],
+					'S-chip-creature-enchantment' : [2, 0],
+					'S-chip-battle-field-enchantment' : [2, 0],
+					'S-chip-summon-field-enchantment' : [2, 0],
 				}
 			},
 			'skeletonWarriorS' : {

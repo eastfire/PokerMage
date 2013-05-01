@@ -2,6 +2,7 @@ Crafty.scene("battle", function() {
 	var elements = [
 		"src/entities/mana.js",
 		"src/entities/summon-field.js",
+		"src/entities/chip.js",
 		"src/entities/creature.js",
 		"src/entities/spell.js",
 		"src/entities/player.js",
