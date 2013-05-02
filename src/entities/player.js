@@ -21,5 +21,6 @@ PlayingPlayer = Backbone.Model.extend({
     initialize: function(){
 		this.book = this.get("player").get("book").clone();
 		this.summonField = [];
+		this.battleField = [];
     }
 });

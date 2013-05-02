@@ -5,12 +5,12 @@ Crafty.c("BattleField", {
 	_enterFrame:function(){
 
 	},
-	summonField:function(options){
+	battleField:function(options){
 		this.model = options.model;
-		this.chips = new ManaCollection();
+		this.chips = new ChipCollection();
 		this.chipEntities = {};
 
-		this.addComponent("BattleField1","Collision");
+		this.addComponent("Collision");
 		this.attr(this.model.toJSON())
 			.bind('EnterFrame', this._enterFrame)
 		this.origin(this.w/2, this.h/2);
@@ -22,11 +22,13 @@ Crafty.c("BattleField", {
 		
 		return this;
 	},
+	onDie:function(){
+	}
 });
 
 BattleField = Backbone.Model.extend({
 	defaults: {
-		w:140,
+		w:200,
 		h:140,
 		owner:1,
 		status:"normal",

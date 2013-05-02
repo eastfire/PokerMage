@@ -55,6 +55,23 @@ Sprites = Backbone.Model.extend({
 					'SummonFieldValid' : [0, 1]
 				}
 			},
+			'battleField' : {
+				'file' : 'web/images/brick.jpg',
+				'tile' : 200,
+				'tileh' : 140,
+				'elements': {
+					'BattleField10' : [0, 0],
+					'BattleField11' : [1, 0],
+					'BattleField12' : [2, 0],
+					'BattleField13' : [3, 0],
+					'BattleField14' : [4, 0],
+					'BattleField20' : [0, 1],
+					'BattleField21' : [1, 1],
+					'BattleField22' : [2, 1],
+					'BattleField23' : [3, 1],
+					'BattleField24' : [4, 1],
+				}
+			},
 			'chipL' : {
 				'file' : 'web/images/chip-l.png',
 				'tile' : 500,

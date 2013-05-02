@@ -2,6 +2,7 @@ Crafty.scene("battle", function() {
 	var elements = [
 		"src/entities/mana.js",
 		"src/entities/summon-field.js",
+		"src/entities/battle-field.js",
 		"src/entities/chip.js",
 		"src/entities/creature.js",
 		"src/entities/spell.js",
@@ -66,15 +67,18 @@ Crafty.scene("battle", function() {
 					.manaCard({model: mana3,size:"M"});
 
 		for ( var i = 0; i < 5 ; i++){
-			var model = new SummonField({x:140+200*i,y:500,z:1,owner:1});
 			playingPlayer[1].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
-				.summonField({model: model});
+				.summonField({model: new SummonField({x:140+200*i,y:500,z:1,owner:1})});
+			playingPlayer[1].battleField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
+				.battleField({model: new SummonField({x:140+200*i,y:360,z:1,owner:1})}).addComponent("BattleField1"+i);
 
 			playingPlayer[2].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
 				.summonField({model: new SummonField({x:140+200*i,y:0,z:1,owner:2})});
+			playingPlayer[2].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
+				.battleField({model: new SummonField({x:140+200*i,y:100,z:1,owner:2})}).addComponent("BattleField2"+i);
 
 			Crafty.e("2D, "+gameContainer.conf.get('renderType')+", TreasureHoard, Tween")
-				.treasureHoard({model: new TreasureHoard({money:10,x:140+200*i+20+40,y:250})}).attr({z:1,w:80,h:55});
+				.treasureHoard({model: new TreasureHoard({money:10,x:140+200*i+20+40,y:270})}).attr({z:1,w:80,h:55});
 		}
 	});
 
