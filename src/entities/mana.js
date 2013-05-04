@@ -9,6 +9,11 @@ CONST.OFFSET_X_MAP = {
 	"M":16,
 	"L":32
 };
+CONST.OFFSET_X_MAP_FOR_10 = {
+	"S":5,
+	"M":8,
+	"L":16
+};
 CONST.OFFSET_Y_MAP = {
 	"S":-3,
 	"M":12,
@@ -25,6 +30,8 @@ Crafty.c("ManaCard", {
 		this.isDragging = true;
 		this.originX = this.x;
 		this.originY = this.y;
+		this.originZ = this.z;
+		this.z = 99;
 	},
 	_onDragging:function(event){
 		
@@ -38,12 +45,14 @@ Crafty.c("ManaCard", {
 		if ( ret = this.hit('SummonField')) {
 			var field = ret[0].obj;
 			if ( Math.abs(field.x+field._origin.x - this.x - this._origin.x)<field.w/2 && Math.abs(field.y+field._origin.y - this.y-this._origin.y)<field.h/2 ) {
+				this.model.collection.remove(this.model);
 				field.addMana(this.model);
 				this.onDie();
 			}
 		}
 		this.x = this.originX;
 		this.y = this.originY;
+		this.z = this.originZ;
 	},
 	manaCard:function(options){
 		this.model = options.model;
@@ -51,6 +60,7 @@ Crafty.c("ManaCard", {
 			.bind('EnterFrame', this._enterFrame)
 		this.origin(this.w/2, this.h/2);
 		this.model.on("destroy",this.onDie,this);
+		this.model.on("change:number",this._onNumberChange,this);
 
 		if ( options.size === "L" ){
 			this.attr({
@@ -76,7 +86,7 @@ Crafty.c("ManaCard", {
 		}
 
 		this.addComponent(options.size+"-suit"+this.attr("suit"));
-		this.offsetX = CONST.OFFSET_X_MAP[options.size];
+		this.offsetX = this.number === 10 ? CONST.OFFSET_X_MAP_FOR_10[options.size] : CONST.OFFSET_X_MAP[options.size];
 		this.offsetY = CONST.OFFSET_Y_MAP[options.size];
 
 		var num = CONST.NumMap[this.attr("number")-2];
@@ -86,6 +96,11 @@ Crafty.c("ManaCard", {
 					.textColor('#000')
 					.textFont({'size' : CONST.FontMap[options.size], 'family': 'Arial', "weight": 'bold'});
 		return this;
+	},
+	_onNumberChange:function(){
+		this.number = this.model.get("number");
+		var size = this.model.get("size");
+		this.offsetX = this.number === 10 ? CONST.OFFSET_X_MAP_FOR_10[size] : CONST.OFFSET_X_MAP[size];
 	},
 	onDie:function(){
 		this.numberEntity.destroy();
@@ -212,6 +227,6 @@ ManaCollection = Backbone.Collection.extend({
 		return ret;
 	},
 	comparator:function(model){
-		return model.get("number");
+		return model.get("number")*5+model.get("suit");
 	}
 });

@@ -1,5 +1,6 @@
 Crafty.scene("battle", function() {
 	var elements = [
+		"src/entities/game-status.js",
 		"src/entities/mana.js",
 		"src/entities/summon-field.js",
 		"src/entities/battle-field.js",
@@ -14,8 +15,15 @@ Crafty.scene("battle", function() {
 
 	var self =this;
 	
+	randomNumber = function(){
+		return Math.floor(Math.random()*13)+2;
+	};
+	randomSuit = function(){
+		return Math.floor(Math.random()*4)+1;
+	}
 	//when everything is loaded, run the main scene
 	require(elements, function() {
+		battleStatus = new BattleStatus();
 		//init
 		player = [];
 		playingPlayer = [];
@@ -53,18 +61,15 @@ Crafty.scene("battle", function() {
 
 		globalMask = Crafty.e("GlobalMask").globalMask().attr("visible",false);
 		
-		var mana1 = new ManaCard({x:200,y:500,z:2,number:2});
-		var c = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", ManaCard, Tween")
-					.manaCard({model: mana1,size:"M"});
-		var mana2 = new ManaCard({x:300,y:500,z:2,number:11,suit:2});
-		var c1 = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", ManaCard, Tween")
-					.manaCard({model: mana2,size:"M"});
-		var mana3 = new ManaCard({x:400,y:500,z:2,number:2,suit:3});
-		var c2 = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", ManaCard, Tween")
-					.manaCard({model: mana3,size:"M"});
-		var mana3 = new ManaCard({x:500,y:500,z:2,number:11,suit:4});
-		var c2 = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", ManaCard, Tween")
-					.manaCard({model: mana3,size:"M"});
+		playingPlayer[1].hand = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", PlayerHand")
+					.playerHand({player:playingPlayer[1]}).attr({x:100,y:620,z:2});
+
+		for ( var i=1; i<=2; i++)
+		{
+			for ( var j=0; j<playingPlayer[i].get("manaIncome"); j++) {
+				playingPlayer[i].manas.add(new ManaCard({x:500,y:500,z:2,number:randomNumber(),suit:randomSuit()}));
+			}
+		}
 
 		for ( var i = 0; i < 5 ; i++){
 			playingPlayer[1].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
