@@ -3,7 +3,7 @@ Crafty.c("SummonField", {
 
 	},
 	_enterFrame:function(){
-		var left = this.x + 50;
+		var left = this.x + 48 + (5-this.manas.length)*10;
 		var top = this.y + 30 + ( this.showingMenu?25:0 );
 		var self = this;
 		for ( var i = 0; i < this.manas.length ; i++ ) {
