@@ -142,6 +142,14 @@ Sprites = Backbone.Model.extend({
 					'Att-icon' : [0, 0]
 				}
 			},
+			"vpIcon":{
+				'file' : 'web/images/coin-icon.png',
+				'tile' : 24,
+				'tileh' : 24,
+				'elements': {
+					'Vp-icon' : [0, 0]
+				}
+			},
 			"treasureHoard":{
 				'file' : 'web/images/treasure-hoard.png',
 				'tile' : 160,
