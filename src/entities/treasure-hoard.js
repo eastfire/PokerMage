@@ -2,7 +2,7 @@ Crafty.c("TreasureHoard", {
 	init:function(){
 	},
 	_enterFrame:function(){		
-		this.numberEntity.text(this.attr("money")).attr({x:this.x+20,y:this.y+30, z:this.z});
+		this.numberEntity.text(this.attr("money")).attr({x:this.x+(this.attr("money")>=10?20:28),y:this.y+30, z:this.z});
 	},
 	treasureHoard:function(options){
 		this.model = options.model;
