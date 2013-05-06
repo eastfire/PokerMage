@@ -23,7 +23,90 @@ Crafty.scene("battle", function() {
 	}
 	//when everything is loaded, run the main scene
 	require(elements, function() {
+		var self = this;
+
+		var timer = Crafty.e("Delay");
 		battleStatus = new BattleStatus();
+
+		battleStatus.on("start-begin",function(){
+			timer.delay(function() {
+					battleStatus.set({"timing":"ing"});
+			}, 100)
+		},this).on("start-ing",function(){
+			timer.delay(function() {
+					battleStatus.set({"timing":"end"});
+			}, 100)
+		},this).on("start-end",function(){
+			timer.delay(function() {
+					battleStatus.set({"phase":"attack","timing":"begin"});
+			}, 100)
+		},this).on("attack-begin",function(){
+			timer.delay(function() {
+					battleStatus.set({"timing":"ing"});
+			}, 100)
+		},this).on("attack-ing",function(){
+			timer.delay(function() {
+					battleStatus.set({"timing":"end"});
+			}, 100)
+		},this).on("attack-end",function(){
+			timer.delay(function() {
+					battleStatus.set({"phase":"mana","timing":"begin"});
+			}, 100)
+		},this).on("mana-begin",function(){
+			for ( var i=1; i<=2; i++)
+			{
+				for ( var j=0; j<playingPlayer[i].get("manaIncome"); j++) {
+					playingPlayer[i].manas.add(new ManaCard({number:randomNumber(),suit:randomSuit()}));
+				}
+			}
+			timer.delay(function() {
+					battleStatus.set({"timing":"ing"});
+			}, 100)
+		},this).on("mana-ing",function(){
+			timer.delay(function() {
+					battleStatus.set({"timing":"end"});
+			}, 10000)
+		},this).on("mana-end",function(){
+			timer.delay(function() {
+					battleStatus.set({"phase":"magic","timing":"begin"});
+			}, 100)
+		},this).on("magic-begin",function(){
+			timer.delay(function() {
+					battleStatus.set({"timing":"ing"});
+			}, 100)
+		},this).on("magic-ing",function(){
+			timer.delay(function() {
+					battleStatus.set({"timing":"end"});
+			}, 100)
+		},this).on("magic-end",function(){
+			timer.delay(function() {
+					battleStatus.set({"phase":"end","timing":"begin"});
+			}, 100)
+		},this).on("end-begin",function(){
+			for ( var i=1; i<=2; i++)
+			{
+				var toDel = [];
+				playingPlayer[i].manas.each(function(model){
+					toDel.push(model);
+				});
+				for ( var j=0; j<toDel.length;j++ )	{
+					toDel[j].destroy();
+				}
+			}
+			timer.delay(function() {
+					battleStatus.set({"timing":"ing"});
+			}, 100)
+		},this).on("end-ing",function(){
+			timer.delay(function() {
+					battleStatus.set({"timing":"end"});
+			}, 100)
+		},this).on("end-end",function(){
+			timer.delay(function() {
+					battleStatus.set({"turn":battleStatus.get("turn")+1,"phase":"start","timing":"begin"});
+			}, 100)
+		},this)
+
+		
 		//init
 		player = [];
 		playingPlayer = [];
@@ -64,13 +147,6 @@ Crafty.scene("battle", function() {
 		playingPlayer[1].hand = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", PlayerHand")
 					.playerHand({player:playingPlayer[1]}).attr({x:100,y:620,z:2});
 
-		for ( var i=1; i<=2; i++)
-		{
-			for ( var j=0; j<playingPlayer[i].get("manaIncome"); j++) {
-				playingPlayer[i].manas.add(new ManaCard({x:500,y:500,z:2,number:randomNumber(),suit:randomSuit()}));
-			}
-		}
-
 		for ( var i = 0; i < 5 ; i++){
 			playingPlayer[1].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
 				.summonField({model: new SummonField({x:140+200*i,y:500,z:1,owner:1})});
@@ -82,9 +158,12 @@ Crafty.scene("battle", function() {
 			playingPlayer[2].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
 				.battleField({model: new SummonField({x:140+200*i,y:100,z:1,owner:2})}).addComponent("BattleField2"+i);
 
+			playingPlayer[1].treasureHoard[i] = playingPlayer[2].treasureHoard[i] = new TreasureHoard({money:10});
 			Crafty.e("2D, "+gameContainer.conf.get('renderType')+", TreasureHoard, Tween")
-				.treasureHoard({model: new TreasureHoard({money:10,x:140+200*i+20+40,y:270})}).attr({z:1,w:80,h:55});
+				.treasureHoard({model: playingPlayer[2].treasureHoard[i]}).attr({z:1,w:80,h:55,x:140+200*i+20+40,y:270});
 		}
+
+		battleStatus.trigger("start-begin",battleStatus);
 	});
 
 });

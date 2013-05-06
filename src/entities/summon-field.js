@@ -16,7 +16,7 @@ Crafty.c("SummonField", {
 			left += 20;
 		};
 		var ret;
-		if ( ret = this.hit('ManaCardActive')) {
+		if ( (ret = this.hit('ManaCardActive')) && this.manas.length < 5) {
 			var manaCard = ret[0].obj;
 			if ( manaCard.owner === this.owner ) {
 				if ( Math.abs(this.x+this._origin.x - manaCard.x - manaCard._origin.x)<this.w/2 && Math.abs(this.y+this._origin.y - manaCard.y-manaCard._origin.y)<this.h/2 ) {
