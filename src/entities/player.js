@@ -24,7 +24,6 @@ PlayingPlayer = Backbone.Model.extend({
 		this.book = this.get("player").get("book").clone();
 		this.summonField = [];
 		this.battleField = [];
-		this.treasureHoard = [];
 		this.manas = new ManaCollection();
     }
 });

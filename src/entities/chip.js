@@ -35,4 +35,4 @@ Chip = Backbone.Model.extend({
 
 ChipCollection = Backbone.Collection.extend({
 	model:Chip
-})
+});

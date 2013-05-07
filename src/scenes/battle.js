@@ -2,9 +2,9 @@ Crafty.scene("battle", function() {
 	var elements = [
 		"src/entities/game-status.js",
 		"src/entities/mana.js",
+		"src/entities/chip.js",
 		"src/entities/summon-field.js",
 		"src/entities/battle-field.js",
-		"src/entities/chip.js",
 		"src/entities/creature.js",
 		"src/entities/spell.js",
 		"src/entities/player.js",
@@ -25,7 +25,7 @@ Crafty.scene("battle", function() {
 	require(elements, function() {
 		var self = this;
 
-		var timer = Crafty.e("Delay");
+		timer = Crafty.e("Delay");
 		battleStatus = new BattleStatus();
 
 		battleStatus.on("start-begin",function(){
@@ -45,9 +45,18 @@ Crafty.scene("battle", function() {
 					battleStatus.set({"timing":"ing"});
 			}, 100)
 		},this).on("attack-ing",function(){
+			for ( var i = 0; i < 5 ; i++ ){
+				for ( var j=1; j<=2; j++)
+				{
+					var chip = playingPlayer[j].battleField[i].chip;
+					if ( chip )	{
+						chip.attack();
+					}
+				}
+			}
 			timer.delay(function() {
 					battleStatus.set({"timing":"end"});
-			}, 100)
+			}, 1000)
 		},this).on("attack-end",function(){
 			timer.delay(function() {
 					battleStatus.set({"phase":"mana","timing":"begin"});
@@ -141,26 +150,26 @@ Crafty.scene("battle", function() {
 			player:player[2],
 			type:"ai"
 		});	
+		treasureHoard = [];
 
 		globalMask = Crafty.e("GlobalMask").globalMask().attr("visible",false);
 		
 		playingPlayer[1].hand = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", PlayerHand")
 					.playerHand({player:playingPlayer[1]}).attr({x:100,y:620,z:2});
 
-		for ( var i = 0; i < 5 ; i++){
-			playingPlayer[1].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
-				.summonField({model: new SummonField({x:140+200*i,y:500,z:1,owner:1})});
+		for ( var i = 0; i < 5 ; i++){			
 			playingPlayer[1].battleField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
-				.battleField({model: new SummonField({x:140+200*i,y:360,z:1,owner:1})}).addComponent("BattleField1"+i);
+				.battleField({model: new BattleField({x:140+200*i,y:360,z:1,owner:1}),index:i}).addComponent("BattleField1"+i);
+			playingPlayer[1].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
+				.summonField({model: new SummonField({x:140+200*i,y:500,z:1,owner:1}),index:i});
 
+			playingPlayer[2].battleField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
+				.battleField({model: new BattleField({x:140+200*i,y:100,z:1,owner:2}),index:i}).addComponent("BattleField2"+i);
 			playingPlayer[2].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
-				.summonField({model: new SummonField({x:140+200*i,y:0,z:1,owner:2})});
-			playingPlayer[2].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
-				.battleField({model: new SummonField({x:140+200*i,y:100,z:1,owner:2})}).addComponent("BattleField2"+i);
+				.summonField({model: new SummonField({x:140+200*i,y:0,z:1,owner:2}),index:i});		
 
-			playingPlayer[1].treasureHoard[i] = playingPlayer[2].treasureHoard[i] = new TreasureHoard({money:10});
-			Crafty.e("2D, "+gameContainer.conf.get('renderType')+", TreasureHoard, Tween")
-				.treasureHoard({model: playingPlayer[2].treasureHoard[i]}).attr({z:1,w:80,h:55,x:140+200*i+20+40,y:270});
+			treasureHoard[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", TreasureHoard, Tween")
+				.treasureHoard({model: new TreasureHoard({money:10})}).attr({z:1,w:80,h:55,x:140+200*i+20+40,y:270});
 		}
 
 		battleStatus.trigger("start-begin",battleStatus);

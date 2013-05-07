@@ -53,14 +53,15 @@ Crafty.c("SummonField", {
 		for ( var i=0; i<len ; i++ )
 			this.manas.pop().destroy();
 		var creature = new Creature({x:this.x+50,y:this.y,z:2,owner:this.owner,spell:creatureSpell});
-		Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature, Tween")
-				.chip({model: creature}).creature({model: creature}).tween({y:this.y-100},10);
+		var battleField = playingPlayer[this.owner].battleField[this.index];
+		battleField.chip = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature, Tween")
+				.chip({model: creature}).creature({model: creature, index:this.index}).tween({y:battleField.attr("y")+20},10);
 	},
 	summonField:function(options){
 		this.model = options.model;
+		this.index = options.index;
 		this.manas = new ManaCollection();
 		this.manaEntities = {};
-
 		this.addComponent("SummonFieldEmpty","Collision","Mouse");
 		this.attr(this.model.toJSON())
 			.bind('EnterFrame', this._enterFrame)

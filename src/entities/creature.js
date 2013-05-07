@@ -13,6 +13,7 @@ Crafty.c("Creature", {
 	},
 	creature:function(options){
 		this.model = options.model;
+		this.index = options.index;
 		this.attr(this.model.toJSON())
 //			.bind('EnterFrame', this._enterFrame)
 			.bind('Click', this._onClicked)
@@ -45,7 +46,12 @@ Crafty.c("Creature", {
 		return this;
 	},
 	attack:function(){
-
+		var orginY = this.attr("y");
+		var self = this;
+		this.tween({y:treasureHoard[this.index].attr("y")},15);
+		timer.delay(function() {
+			self.tween({y:orginY},15);
+		}, 500);
 	},
 	takeDamage:function(amount, color){
 
