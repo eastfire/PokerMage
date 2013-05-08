@@ -2,7 +2,7 @@ Crafty.c("TreasureHoard", {
 	init:function(){
 	},
 	_enterFrame:function(){		
-		this.numberEntity.text(this.model.get("vp")).attr({x:this.x+(this.model.get("vp")>=10?20:28),y:this.y+30, z:this.z});
+		this.numberEntity.text(this.model.get("vp")).attr({x:this.x+this.w/2,y:this.y+30, z:this.z});
 	},
 	treasureHoard:function(options){
 		this.model = options.model;
@@ -18,7 +18,8 @@ Crafty.c("TreasureHoard", {
 			.attr({w: 20, h: 20, x: this.x + 20, y: this.y + 30 , z: this.z})
 					.text(this.attr("vp"))
 					.textColor('#ffffff')
-					.textFont({'size' : "36px", 'family': 'Arial', "weight": 'bold'});
+					.textFont({'size' : "36px", 'family': 'Arial', "weight": 'bold'})
+					.textAlign("center");;
 		return this;
 	},
 	_onStatusChanged:function(model){

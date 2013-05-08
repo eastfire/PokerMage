@@ -8789,7 +8789,7 @@ Crafty.c("Text", {
 
 				context.fillStyle = this._textColor || "rgb(0,0,0)";
 				context.font = font;
-
+				context.textAlign = this._textAlign || "left";
 				context.translate(this.x, this.y + this.h);
 				context.fillText(this._text, 0, 0);
 
@@ -8899,6 +8899,13 @@ Crafty.c("Text", {
 		} else {
 			this._textFont[key] = value;
 		}
+
+		this.trigger("Change");
+		return this;
+	},
+	
+	textAlign: function (align) {
+		this._textAlign = align;
 
 		this.trigger("Change");
 		return this;
