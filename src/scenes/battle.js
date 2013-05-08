@@ -49,7 +49,7 @@ Crafty.scene("battle", function() {
 				for ( var j=1; j<=2; j++)
 				{
 					var chip = playingPlayer[j].battleField[i].chip;
-					if ( chip )	{
+					if ( chip && chip.has("Creature") )	{
 						chip.attack();
 					}
 				}

@@ -2,7 +2,7 @@ Crafty.c("TreasureHoard", {
 	init:function(){
 	},
 	_enterFrame:function(){		
-		this.numberEntity.text(this.attr("money")).attr({x:this.x+(this.attr("money")>=10?20:28),y:this.y+30, z:this.z});
+		this.numberEntity.text(this.model.get("vp")).attr({x:this.x+(this.model.get("vp")>=10?20:28),y:this.y+30, z:this.z});
 	},
 	treasureHoard:function(options){
 		this.model = options.model;
@@ -16,7 +16,7 @@ Crafty.c("TreasureHoard", {
 		
 		this.numberEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
 			.attr({w: 20, h: 20, x: this.x + 20, y: this.y + 30 , z: this.z})
-					.text(this.attr("money"))
+					.text(this.attr("vp"))
 					.textColor('#ffffff')
 					.textFont({'size' : "36px", 'family': 'Arial', "weight": 'bold'});
 		return this;
@@ -36,7 +36,12 @@ Crafty.c("TreasureHoard", {
 
 TreasureHoard = Backbone.Model.extend({
 	defaults: {
-		money:10,
+		vp:10,
 		status:"normal"
-    }
+    },
+	takeVP:function(amount){
+		var a = Math.min( this.get("vp"), amount);
+		this.set("vp", this.get("vp")-a);
+		return a;
+	}
 });

@@ -3,11 +3,11 @@ Crafty.c("Creature", {
 	},
 	_enterFrame:function(){
 		this.attIconEntity.attr({x:this.x+11,y:this.y+11, z:this.z});
-		this.attEntity.text(this.att).attr({x:this.x+15,y:this.y+8, z:this.z});
+		this.attEntity.text(this.model.getAttack()).attr({x:this.x+15,y:this.y+8, z:this.z});
 		this.hpIconEntity.attr({x:this.x+74,y:this.y+11, z:this.z});
-		this.hpEntity.text(this.hp).attr({x:this.x+79,y:this.y+8, z:this.z});
+		this.hpEntity.text(this.model.getHP()).attr({x:this.x+79,y:this.y+8, z:this.z});
 		this.vpIconEntity.attr({x:this.x+74,y:this.y+71, z:this.z});
-		this.vpEntity.text(this.vp).attr({x:this.x+79,y:this.y+67, z:this.z});
+		this.vpEntity.text(this.model.getVP()).attr({x:this.x+79,y:this.y+67, z:this.z});
 	},
 	_onClicked:function(){
 	},
@@ -48,10 +48,24 @@ Crafty.c("Creature", {
 	attack:function(){
 		var orginY = this.attr("y");
 		var self = this;
-		this.tween({y:treasureHoard[this.index].attr("y")},15);
-		timer.delay(function() {
-			self.tween({y:orginY},15);
-		}, 500);
+		var treasure = treasureHoard[this.index];
+		var oppositeChip = playingPlayer[3-this.owner].battleField[this.index].chip;
+		if ( treasure.model.get("status") === "normal" && treasure.model.get("vp") > 0 )	{
+			this.tween({y:this.owner===1?(treasure.attr("y")+treasure.attr("h")):(treasure.attr("y") - this.attr("h")) },15);
+			timer.delay(function() {
+				var amount = treasure.model.takeVP(self.model.getAttack());
+				playingPlayer[self.owner].changeVP(amount);
+				self.tween({y:orginY},15);
+			}, 500);
+		} else if ( oppositeChip && oppositeChip.has("Creature") ){
+			this.tween({y:treasure.attr("y")+treasure.attr("h")/2 - ( this.owner===1?0 : this.attr("h") ) },15);
+			timer.delay(function() {
+				self.tween({y:orginY},15);
+			}, 500);
+		} else {
+
+		}
+
 	},
 	takeDamage:function(amount, color){
 
@@ -79,5 +93,14 @@ Creature = Chip.extend({
 		});
     },
     initialize: function(){
-    }
+    },
+	getAttack:function(){
+		return this.get("att");
+	},
+	getHP:function(){
+		return this.get("hp");
+	},
+	getVP:function(){
+		return this.get("vp");
+	}
 });

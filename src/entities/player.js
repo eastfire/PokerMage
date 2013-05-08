@@ -25,7 +25,10 @@ PlayingPlayer = Backbone.Model.extend({
 		this.summonField = [];
 		this.battleField = [];
 		this.manas = new ManaCollection();
-    }
+    },
+	changeVP:function(amount){
+		this.set("vp",Math.max(0,this.get("vp")+amount) );
+	}
 });
 
 Crafty.c("PlayerHand", {
