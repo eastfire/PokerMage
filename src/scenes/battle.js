@@ -119,11 +119,14 @@ Crafty.scene("battle", function() {
 		//init
 		player = [];
 		playingPlayer = [];
+		playerAvatar = [];
 		player[1] = new Player({
-			"name":"player1"
+			"name":"player1",
+			"portrait":"./web/images/player-portrait.png"
 		});
 		player[2] = new Player({
-			"name":"AIPlayer"
+			"name":"AIPlayer",
+			"portrait":"./web/images/ai-portrait.png"
 		});
 		player[1].get("book").add([{
 			cost: "pair",
@@ -155,8 +158,11 @@ Crafty.scene("battle", function() {
 		globalMask = Crafty.e("GlobalMask").globalMask().attr("visible",false);
 		
 		playingPlayer[1].hand = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", PlayerHand")
-					.playerHand({player:playingPlayer[1]}).attr({x:100,y:620,z:2});
+					.playerHand({player:playingPlayer[1]}).attr({x:150,y:620,z:2});
 
+		playerAvatar[1] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", PlayerAvatar")
+			.playerAvatar({player:playingPlayer[1]}).attr({x:10,y:500});
+		
 		for ( var i = 0; i < 5 ; i++){			
 			playingPlayer[1].battleField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
 				.battleField({model: new BattleField({x:140+200*i,y:360,z:1,owner:1}),index:i}).addComponent("BattleField1"+i);

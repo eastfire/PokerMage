@@ -79,3 +79,35 @@ Crafty.c("PlayerHand", {
 		this.destroy();
 	}
 });
+
+Crafty.c("PlayerAvatar", {
+	init:function(){
+
+	},
+	_enterFrame:function(){
+		this.portraitEntity.attr({x: this.attr("x"), y: this.attr("y"), z: this.z});
+		this.vpIconEntity.attr({x: this.attr("x") + 14, y: this.attr("y")+110, z: this.z});
+		this.vpEntity.text(this.player.get("vp")).attr({x: this.attr("x") + 32, y: this.attr("y")+100, z: this.z});
+	},
+	playerAvatar:function(options){
+		this.player = options.player;
+		this.origin(this.w/2, this.h/2);
+		this.player.on("destroy",this.onDie,this);
+
+		this.bind('EnterFrame', this._enterFrame);
+		
+		this.portraitEntity = Crafty.e("2D, DOM, Image")
+			.image(this.player.get("player").get("portrait"))
+			.attr({w: 100, h: 100, x: this.x, y: this.y, z: this.z})
+
+		this.vpIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Vp-icon")
+			.attr({w: 36, h: 36, x: this.x + 14, y: this.y + 100, z: this.z})
+		this.vpEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
+			.attr({w: 36, h: 36, x: this.x + 32, y: this.y + 100, z: this.z})
+					.text(this.player.get("vp"))
+					.textColor('#000000')
+					.textFont({'size' : "25px", 'family': 'Arial', "weight": 'bold'})
+					.textAlign("center");
+		return this;
+	}
+});
