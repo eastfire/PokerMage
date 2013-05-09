@@ -150,6 +150,14 @@ Sprites = Backbone.Model.extend({
 					'Vp-icon' : [0, 0]
 				}
 			},
+			"manaSourceIcon":{
+				'file' : 'web/images/mana-source-icon.png',
+				'tile' : 36,
+				'tileh' : 36,
+				'elements': {
+					'Mana-source-icon' : [0, 0]
+				}
+			},
 			"treasureHoard":{
 				'file' : 'web/images/treasure-hoard.png',
 				'tile' : 160,

@@ -88,6 +88,8 @@ Crafty.c("PlayerAvatar", {
 		this.portraitEntity.attr({x: this.attr("x"), y: this.attr("y"), z: this.z});
 		this.vpIconEntity.attr({x: this.attr("x") + 14, y: this.attr("y")+110, z: this.z});
 		this.vpEntity.text(this.player.get("vp")).attr({x: this.attr("x") + 32, y: this.attr("y")+100, z: this.z});
+		this.manaSourceIconEntity.attr({x: this.attr("x") + 54, y: this.attr("y")+110, z: this.z});
+		this.manaSourceEntity.text(this.player.get("manaIncome")).attr({x: this.attr("x") + 72, y: this.attr("y")+100, z: this.z});
 	},
 	playerAvatar:function(options){
 		this.player = options.player;
@@ -106,6 +108,15 @@ Crafty.c("PlayerAvatar", {
 			.attr({w: 36, h: 36, x: this.x + 32, y: this.y + 100, z: this.z})
 					.text(this.player.get("vp"))
 					.textColor('#000000')
+					.textFont({'size' : "25px", 'family': 'Arial', "weight": 'bold'})
+					.textAlign("center");
+
+		this.manaSourceIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Mana-source-icon")
+			.attr({w: 36, h: 36, x: this.x + 54, y: this.y + 100, z: this.z})
+		this.manaSourceEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
+			.attr({w: 36, h: 36, x: this.x + 72, y: this.y + 100, z: this.z})
+					.text(this.player.get("manaIncome"))
+					.textColor('#ffffff')
 					.textFont({'size' : "25px", 'family': 'Arial', "weight": 'bold'})
 					.textAlign("center");
 		return this;
