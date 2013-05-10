@@ -29,6 +29,7 @@ Crafty.scene("battle", function() {
 		battleStatus = new BattleStatus();
 
 		battleStatus.on("start-begin",function(){
+			gameTurn.text("第"+battleStatus.get("turn")+"回合");
 			timer.delay(function() {
 					battleStatus.set({"timing":"ing"});
 			}, 100)
@@ -115,6 +116,10 @@ Crafty.scene("battle", function() {
 			}, 100)
 		},this)
 
+		var gameTurn = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
+			.attr({x:10,y:10,z:1,w:200,h:40})
+			.textColor('#ffffff')
+			.textFont({'size' : "24px", 'family': 'Arial', "weight": 'bold'});
 		
 		//init
 		player = [];
