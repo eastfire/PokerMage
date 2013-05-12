@@ -49,9 +49,12 @@ Crafty.scene("battle", function() {
 			for ( var i = 0; i < 5 ; i++ ){
 				for ( var j=1; j<=2; j++)
 				{
-					var chip = playingPlayer[j].battleField[i].chip;
-					if ( chip && chip.has("Creature") )	{
-						chip.attack();
+					var chip = playingPlayer[j].battleField[i].model.chips.at(0);
+					if ( chip )	{
+						var chipEntity = ChipEntities[chip.cid];
+						if ( chipEntity.has("Creature") ){
+							chipEntity.attack();
+						}
 					}
 				}
 			}
@@ -122,6 +125,7 @@ Crafty.scene("battle", function() {
 			.textFont({'size' : "24px", 'family': 'Arial', "weight": 'bold'});
 		
 		//init
+		ChipEntities = {};
 		player = [];
 		playingPlayer = [];
 		playerAvatar = [];

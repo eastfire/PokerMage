@@ -4,10 +4,20 @@ Crafty.c("Chip", {
 	chip:function(options){
 		this.model = options.model;
 		this.attr(this.model.toJSON())
-			.bind('EnterFrame', function(){
-				this.faceEntity.attr({x:this.x+20,y:this.y+20, z:this.z});				
+			.bind('EnterFrame',function(){
+				this.faceEntity.attr({x:this.attr("x")+20,y:this.attr("y")+20, z:this.attr("z")});
 			})
-			.bind('Click', this._onClicked)
+			.bind('Click', this._onClicked);
+		this.addComponent("Mouse")
+			.bind("MouseOver",function(event){
+				this.originZ = this.attr("z");
+				this.attr({"z": 999});
+				this.addComponent("MouseOver");
+			})
+			.bind('MouseOut', function(){
+				this.attr({"z":this.originZ});
+				this.removeComponent("MouseOver");
+			})
 		this.origin(this.w/2, this.h/2);
 		this.model.on("destroy",this.onDie,this);
 

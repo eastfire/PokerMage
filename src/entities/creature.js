@@ -53,7 +53,7 @@ Crafty.c("Creature", {
 		var self = this;
 		var treasure = treasureHoard[this.index];
 		var oppositeChip = playingPlayer[3-this.owner].battleField[this.index].chip;
-		if ( treasure.model.get("status") === "normal" && treasure.model.get("vp") > 0 )	{
+		if ( treasure.model.get("status") === "normal" && treasure.model.get("vp") > 0 ) {
 			this.tween({y:this.owner===1?(treasure.attr("y")+treasure.attr("h")):(treasure.attr("y") - this.attr("h")) },15);
 			timer.delay(function() {
 				var amount = treasure.model.takeVP(self.model.getAttack());
@@ -88,9 +88,9 @@ Creature = Chip.extend({
 		return _.extend(Chip.prototype.defaults.call(this), {
 			x : 0,
 			y : 0,
-			hp : 16,
-			att : 11,
-			vp : 10,
+			hp : 3,
+			att : 1,
+			vp : 1,
 			w:100,
 			h:100
 		});

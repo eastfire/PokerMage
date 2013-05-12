@@ -1,9 +1,21 @@
+CHIP_STACK_DISTANCE = 17;
+
 Crafty.c("BattleField", {
 	init:function(){
 
 	},
 	_enterFrame:function(){
-
+		var len = this.model.chips.length;
+		if ( len ) {
+			var startY = ChipEntities[this.model.chips.at(0).cid].attr("y");
+			for ( var i=1; i < len ; i++){
+				var chip = this.model.chips.at(i);
+				var chipEntity = ChipEntities[chip.cid];
+				chipEntity.attr({y:startY+i*CHIP_STACK_DISTANCE});
+				if ( !chipEntity.has("MouseOver") )
+					chipEntity.attr({z:len-i});
+			};
+		}
 	},
 	battleField:function(options){
 		this.model = options.model;
@@ -25,10 +37,10 @@ BattleField = Backbone.Model.extend({
 		w:200,
 		h:140,
 		owner:1,
-		status:"normal",
-		chip:null
+		status:"normal"
     },
     initialize: function(){
+		this.chips = new ChipCollection();
     }
 });
 

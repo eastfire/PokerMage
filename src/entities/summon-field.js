@@ -54,8 +54,12 @@ Crafty.c("SummonField", {
 			this.manas.pop().destroy();
 		var creature = new Creature({x:this.x+50,y:this.y,z:2,owner:this.owner,spell:creatureSpell});
 		var battleField = playingPlayer[this.owner].battleField[this.index];
-		battleField.chip = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature, Tween")
-				.chip({model: creature}).creature({model: creature, index:this.index}).tween({y:battleField.attr("y")+20},10);
+		var y = battleField.model.chips.length == 0?(battleField.attr("y")+40):ChipEntities[battleField.model.chips.at(0).cid].attr("y")-CHIP_STACK_DISTANCE;
+		ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature, Tween")
+				.chip({model: creature}).creature({model: creature, index:this.index}).tween({y:y},10);
+		timer.delay(function() {
+			battleField.model.chips.unshift(creature);					
+		}, 500)
 	},
 	summonField:function(options){
 		this.model = options.model;
