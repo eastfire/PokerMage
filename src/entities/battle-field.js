@@ -7,7 +7,9 @@ Crafty.c("BattleField", {
 	_enterFrame:function(){
 		var len = this.model.chips.length;
 		if ( len ) {
-			var startY = ChipEntities[this.model.chips.at(0).cid].attr("y");
+			var firstChip = ChipEntities[this.model.chips.at(0).cid];
+			var startY = firstChip.attr("y");
+			firstChip.attr({"z":len});
 			for ( var i=1; i < len ; i++){
 				var chip = this.model.chips.at(i);
 				var chipEntity = ChipEntities[chip.cid];

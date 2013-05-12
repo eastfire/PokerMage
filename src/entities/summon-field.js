@@ -58,6 +58,9 @@ Crafty.c("SummonField", {
 		ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature, Tween")
 				.chip({model: creature}).creature({model: creature, index:this.index}).tween({y:y},10);
 		timer.delay(function() {
+			battleField.model.chips.each(function(chip){
+				ChipEntities[chip.cid].beStacked();
+			});
 			battleField.model.chips.unshift(creature);					
 		}, 500)
 	},

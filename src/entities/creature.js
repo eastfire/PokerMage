@@ -80,6 +80,12 @@ Crafty.c("Creature", {
 		this.hpEntity.destroy();
 		this.vpIconEntity.destory();
 		this.vpEntity.destroy();
+	},
+	beStacked:function(){
+		this.attIconEntity.attr({visible:false});
+		this.attEntity.attr({visible:false});
+		this.hpIconEntity.attr({visible:false});
+		this.hpEntity.attr({visible:false});
 	}
 });
 
