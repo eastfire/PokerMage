@@ -29,7 +29,6 @@ Crafty.scene("battle", function() {
 		battleStatus = new BattleStatus();
 
 		battleStatus.on("start-begin",function(){
-			gameTurn.text("第"+battleStatus.get("turn")+"回合");
 			timer.delay(function() {
 					battleStatus.set({"timing":"ing"});
 			}, 100)
@@ -46,18 +45,7 @@ Crafty.scene("battle", function() {
 					battleStatus.set({"timing":"ing"});
 			}, 100)
 		},this).on("attack-ing",function(){
-			for ( var i = 0; i < 5 ; i++ ){
-				for ( var j=1; j<=2; j++)
-				{
-					var chip = playingPlayer[j].battleField[i].model.chips.at(0);
-					if ( chip )	{
-						var chipEntity = ChipEntities[chip.cid];
-						if ( chipEntity.has("Creature") ){
-							chipEntity.attack();
-						}
-					}
-				}
-			}
+			
 			timer.delay(function() {
 					battleStatus.set({"timing":"end"});
 			}, 1000)
@@ -66,7 +54,7 @@ Crafty.scene("battle", function() {
 					battleStatus.set({"phase":"mana","timing":"begin"});
 			}, 100)
 		},this).on("mana-begin",function(){
-			for ( var i=1; i<=2; i++)
+			for ( var i=1; i<=1; i++)
 			{
 				for ( var j=0; j<playingPlayer[i].get("manaIncome"); j++) {
 					playingPlayer[i].manas.add(new ManaCard({number:randomNumber(),suit:randomSuit()}));
@@ -119,16 +107,13 @@ Crafty.scene("battle", function() {
 			}, 100)
 		},this)
 
-		var gameTurn = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
-			.attr({x:10,y:10,z:1,w:200,h:40})
-			.textColor('#ffffff')
-			.textFont({'size' : "24px", 'family': 'Arial', "weight": 'bold'});
-		
 		//init
 		ChipEntities = {};
 		player = [];
 		playingPlayer = [];
 		playerAvatar = [];
+		battleField = [];
+
 		player[1] = new Player({
 			"name":"player1",
 			"portrait":"./web/images/player-portrait.png"
@@ -170,21 +155,18 @@ Crafty.scene("battle", function() {
 					.playerHand({player:playingPlayer[1]}).attr({x:150,y:620,z:2});
 
 		playerAvatar[1] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", PlayerAvatar")
-			.playerAvatar({player:playingPlayer[1]}).attr({x:10,y:500});
+			.playerAvatar({player:playingPlayer[1]}).attr({x:10,y:570});
 		
-		for ( var i = 0; i < 5 ; i++){			
-			playingPlayer[1].battleField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
-				.battleField({model: new BattleField({x:140+200*i,y:360,z:1,owner:1}),index:i}).addComponent("BattleField1"+i);
+		for ( var i = 0; i < 5 ; i++){
+			battleField[i] = [];
+
+			for ( var j = 0; j < 7; j++ ){
+				battleField[i][j] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
+					.battleField({model: new BattleField({x:j,y:i}) }).addComponent("BattleField1"+i);
+			}
 			playingPlayer[1].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
-				.summonField({model: new SummonField({x:140+200*i,y:500,z:1,owner:1}),index:i});
+				.summonField({model: new SummonField({x:10,y:110*i,z:1,owner:1}),index:i});
 
-			playingPlayer[2].battleField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
-				.battleField({model: new BattleField({x:140+200*i,y:100,z:1,owner:2}),index:i}).addComponent("BattleField2"+i);
-			playingPlayer[2].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
-				.summonField({model: new SummonField({x:140+200*i,y:0,z:1,owner:2}),index:i});		
-
-			treasureHoard[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", TreasureHoard, Tween")
-				.treasureHoard({model: new TreasureHoard({money:10})}).attr({z:1,w:80,h:55,x:140+200*i+20+40,y:270});
 		}
 
 		battleStatus.trigger("start-begin",battleStatus);

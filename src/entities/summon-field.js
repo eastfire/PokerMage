@@ -53,10 +53,11 @@ Crafty.c("SummonField", {
 		for ( var i=0; i<len ; i++ )
 			this.manas.pop().destroy();
 		var creature = new Creature({x:this.x+50,y:this.y,z:2,owner:this.owner,spell:creatureSpell});
-		var battleField = playingPlayer[this.owner].battleField[this.index];
-		var y = battleField.model.chips.length == 0?(battleField.attr("y")+40):ChipEntities[battleField.model.chips.at(0).cid].attr("y")-CHIP_STACK_DISTANCE;
+		var battleField = window.battleField[this.index][0];
+		var y = battleField.model.chips.length == 0?(battleField.attr("y")):ChipEntities[battleField.model.chips.at(0).cid].attr("y")-CHIP_STACK_DISTANCE;
+		var x = battleField.attr("x")+10;
 		ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature, Tween")
-				.chip({model: creature}).creature({model: creature, index:this.index}).tween({y:y},10);
+				.chip({model: creature}).creature({model: creature, index:this.index}).tween({x:x, y:y},10);
 		timer.delay(function() {
 			battleField.model.chips.each(function(chip){
 				ChipEntities[chip.cid].beStacked();

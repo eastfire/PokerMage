@@ -23,7 +23,11 @@ Crafty.c("BattleField", {
 		this.model = options.model;
 		this.index = options.index;
 		this.addComponent("Collision");
-		this.attr(this.model.toJSON())
+		this.attr({
+			z:1,
+			x:this.model.get("x")*130+210,
+			y:this.model.get("y")*110
+		})
 			.bind('EnterFrame', this._enterFrame)
 		this.origin(this.w/2, this.h/2);
 
@@ -36,9 +40,6 @@ Crafty.c("BattleField", {
 
 BattleField = Backbone.Model.extend({
 	defaults: {
-		w:200,
-		h:140,
-		owner:1,
 		status:"normal"
     },
     initialize: function(){

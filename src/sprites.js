@@ -57,8 +57,8 @@ Sprites = Backbone.Model.extend({
 			},
 			'battleField' : {
 				'file' : 'web/images/brick.jpg',
-				'tile' : 200,
-				'tileh' : 140,
+				'tile' : 120,
+				'tileh' : 100,
 				'elements': {
 					'BattleField10' : [0, 0],
 					'BattleField11' : [1, 0],
