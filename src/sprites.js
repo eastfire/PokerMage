@@ -107,15 +107,25 @@ Sprites = Backbone.Model.extend({
 				'tile' : 60,
 				'tileh' : 60,
 				'elements': {
-					'S-skeleton-warrior' : [0, 0]
+					'S-skeleton-warrior' : [0, 0],
+					'Menu-skeleton-warrior' : [0, 0]
 				}
 			},
-			'skeletonWarriorMenu' : {
-				'file' : 'web/images/skeleton-warrior-menu.png',
+			'humanWarriorL' : {
+				'file' : 'web/images/human-warrior-l.png',
+				'tile' : 300,
+				'tileh' : 300,
+				'elements': {
+					'L-human-warrior' : [0, 0]
+				}
+			},
+			'humanWarriorS' : {
+				'file' : 'web/images/human-warrior-s.png',
 				'tile' : 60,
 				'tileh' : 60,
 				'elements': {
-					'Menu-skeleton-warrior' : [0, 0]
+					'S-human-warrior' : [0, 0],
+					'Menu-human-warrior' : [0, 0]
 				}
 			},
 			'skeletonWarriorL' : {
@@ -156,6 +166,14 @@ Sprites = Backbone.Model.extend({
 				'tileh' : 36,
 				'elements': {
 					'Mana-source-icon' : [0, 0]
+				}
+			},
+			"handLimitIcon":{
+				'file' : 'web/images/hand-limit-icon.png',
+				'tile' : 36,
+				'tileh' : 36,
+				'elements': {
+					'hand-limit-icon' : [0, 0]
 				}
 			},
 			"treasureHoard":{

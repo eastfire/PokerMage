@@ -18,7 +18,8 @@ PlayingPlayer = Backbone.Model.extend({
 		player:"",
 		type:"",
 		vp:0,
-		manaIncome:5
+		manaIncome:5,
+		handLimit:7
     },
     initialize: function(){
 		this.book = this.get("player").get("book").clone();
@@ -86,10 +87,10 @@ Crafty.c("PlayerAvatar", {
 	},
 	_enterFrame:function(){
 		this.portraitEntity.attr({x: this.attr("x"), y: this.attr("y"), z: this.z});
-		this.vpIconEntity.attr({x: this.attr("x") + 14, y: this.attr("y")+110, z: this.z});
-		this.vpEntity.text(this.player.get("vp")).attr({x: this.attr("x") + 32, y: this.attr("y")+100, z: this.z});
-		this.manaSourceIconEntity.attr({x: this.attr("x") + 54, y: this.attr("y")+110, z: this.z});
-		this.manaSourceEntity.text(this.player.get("manaIncome")).attr({x: this.attr("x") + 72, y: this.attr("y")+100, z: this.z});
+		//this.vpIconEntity.attr({x: this.attr("x") + 14, y: this.attr("y")+110, z: this.z});
+		//this.vpEntity.text(this.player.get("vp")).attr({x: this.attr("x") + 32, y: this.attr("y")+100, z: this.z});
+		this.handLimitIconEntity.attr({x: this.attr("x") + 54, y: this.attr("y")+110, z: this.z});
+		this.handLimitEntity.text(this.player.get("handLimit")).attr({x: this.attr("x") + 72, y: this.attr("y")+100, z: this.z});
 	},
 	playerAvatar:function(options){
 		this.player = options.player;
@@ -102,7 +103,7 @@ Crafty.c("PlayerAvatar", {
 			.image(this.player.get("player").get("portrait"))
 			.attr({w: 100, h: 100, x: this.x, y: this.y, z: this.z})
 
-		this.vpIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Vp-icon")
+		/*this.vpIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Vp-icon")
 			.attr({w: 36, h: 36, x: this.x + 14, y: this.y + 100, z: this.z})
 		this.vpEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
 			.attr({w: 36, h: 36, x: this.x + 32, y: this.y + 100, z: this.z})
@@ -110,12 +111,12 @@ Crafty.c("PlayerAvatar", {
 					.textColor('#000000')
 					.textFont({'size' : "25px", 'family': 'Arial', "weight": 'bold'})
 					.textAlign("center");
-
-		this.manaSourceIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Mana-source-icon")
+*/
+		this.handLimitIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", hand-limit-icon")
 			.attr({w: 36, h: 36, x: this.x + 54, y: this.y + 100, z: this.z})
-		this.manaSourceEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
+		this.handLimitEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
 			.attr({w: 36, h: 36, x: this.x + 72, y: this.y + 100, z: this.z})
-					.text(this.player.get("manaIncome"))
+					.text(this.player.get("handLimit"))
 					.textColor('#ffffff')
 					.textFont({'size' : "25px", 'family': 'Arial', "weight": 'bold'})
 					.textAlign("center");

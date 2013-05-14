@@ -25,8 +25,8 @@ Crafty.c("BattleField", {
 		this.addComponent("Collision");
 		this.attr({
 			z:1,
-			x:this.model.get("x")*130+210,
-			y:this.model.get("y")*110
+			x:this.model.get("x")*120+210,
+			y:this.model.get("y")*100
 		})
 			.bind('EnterFrame', this._enterFrame)
 		this.origin(this.w/2, this.h/2);

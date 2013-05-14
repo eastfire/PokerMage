@@ -102,6 +102,7 @@ Creature = Chip.extend({
 		});
     },
     initialize: function(){
+		this.set("hp", this.get("spell").get("hp"));
     },
 	getAttack:function(){
 		return this.get("att");
