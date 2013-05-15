@@ -54,7 +54,8 @@ Crafty.scene("battle", function() {
 					battleStatus.set({"phase":"mana","timing":"begin"});
 			}, 100)
 		},this).on("mana-begin",function(){
-			playingPlayer[1].manas.add(new ManaCard({number:randomNumber(),suit:randomSuit()}));
+			for ( var i = 0 ; i < playingPlayer[1].get("manaIncome") ; i++ )
+				playingPlayer[1].manas.add(new ManaCard({number:randomNumber(),suit:randomSuit()}));
 			timer.delay(function() {
 					battleStatus.set({"timing":"ing"});
 			}, 100)
@@ -79,18 +80,15 @@ Crafty.scene("battle", function() {
 					battleStatus.set({"phase":"end","timing":"begin"});
 			}, 100)
 		},this).on("end-begin",function(){
-			for ( var i=1; i<=2; i++)
+			if ( playingPlayer[1].manas.length > playingPlayer[1].get("handLimit") )
 			{
-				if ( playingPlayer[i].manas.length > playingPlayer[i].get("handLimit") )
-				{
-					var toDel = [];
-					playingPlayer[i].manas.each(function(model){
-						toDel.push(model);
-					});
-					for ( var j=0; j<toDel.length;j++ )	{
-						toDel[j].destroy();
-					}
-				}				
+				var toDel = [];
+				playingPlayer[1].manas.each(function(model){
+					toDel.push(model);
+				});
+				for ( var j=0; j<toDel.length;j++ )	{
+					toDel[j].destroy();
+				}
 			}
 			timer.delay(function() {
 					battleStatus.set({"timing":"ing"});
@@ -123,18 +121,24 @@ Crafty.scene("battle", function() {
 		player[1].get("book").add([{
 			cost: "pair",
 			amount:"1",
-			name:"human-warrior",
-			label:"战士",
+			name:"skeleton-warrior",
+			label:"骷髅战士",
 			type:"creature",
-			hp:5,
+			hp:3,
+			att:1,
+			def:0,
 			owner:1
 		}]);
 		player[2].get("book").add([{
 			cost: "pair",
 			amount:"1",
-			name:"skeleton-warrior",
-			label:"骷髅战士",
+			name:"human-warrior",
+			label:"战士",
 			type:"creature",
+			owner:2,
+			hp:5,
+			att:1,
+			def:0,
 			owner:1
 		}]);
 
@@ -159,12 +163,12 @@ Crafty.scene("battle", function() {
 		for ( var i = 0; i < 5 ; i++){
 			battleField[i] = [];
 
-			for ( var j = 0; j < 7; j++ ){
+			for ( var j = 0; j < 9; j++ ){
 				battleField[i][j] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", BattleField, Tween")
-					.battleField({model: new BattleField({x:j,y:i}) }).addComponent("BattleField1"+i);
+					.battleField({model: new BattleField({x:j,y:i,z:0}) }).addComponent("BattleField1"+i);
 			}
 			playingPlayer[1].summonField[i] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonField, Tween")
-				.summonField({model: new SummonField({x:10,y:100*i,z:1,owner:1}),index:i});
+				.summonField({model: new SummonField({x:10,y:105*i,z:1,owner:1}),index:i});
 
 		}
 

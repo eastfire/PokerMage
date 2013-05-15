@@ -57,7 +57,7 @@ Sprites = Backbone.Model.extend({
 			},
 			'battleField' : {
 				'file' : 'web/images/brick.jpg',
-				'tile' : 120,
+				'tile' : 100,
 				'tileh' : 100,
 				'elements': {
 					'BattleField10' : [0, 0],
@@ -152,6 +152,14 @@ Sprites = Backbone.Model.extend({
 					'Att-icon' : [0, 0]
 				}
 			},
+			"defIcon":{
+				'file' : 'web/images/defend-icon.png',
+				'tile' : 24,
+				'tileh' : 24,
+				'elements': {
+					'Def-icon' : [0, 0]
+				}
+			},
 			"vpIcon":{
 				'file' : 'web/images/coin-icon.png',
 				'tile' : 24,
@@ -160,12 +168,12 @@ Sprites = Backbone.Model.extend({
 					'Vp-icon' : [0, 0]
 				}
 			},
-			"manaSourceIcon":{
-				'file' : 'web/images/mana-source-icon.png',
+			"manaIncomeIcon":{
+				'file' : 'web/images/mana-income-icon.png',
 				'tile' : 36,
 				'tileh' : 36,
 				'elements': {
-					'Mana-source-icon' : [0, 0]
+					'mana-income-icon' : [0, 0]
 				}
 			},
 			"handLimitIcon":{
