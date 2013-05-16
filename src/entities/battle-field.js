@@ -5,19 +5,7 @@ Crafty.c("BattleField", {
 
 	},
 	_enterFrame:function(){
-		var len = this.model.chips.length;
-		if ( len ) {
-			var firstChip = ChipEntities[this.model.chips.at(0).cid];
-			var startY = firstChip.attr("y");
-			firstChip.attr({"z":len});
-			for ( var i=1; i < len ; i++){
-				var chip = this.model.chips.at(i);
-				var chipEntity = ChipEntities[chip.cid];
-				chipEntity.attr({y:startY+i*CHIP_STACK_DISTANCE});
-				if ( !chipEntity.has("MouseOver") )
-					chipEntity.attr({z:len-i});
-			};
-		}
+		
 	},
 	battleField:function(options){
 		this.model = options.model;
@@ -43,7 +31,6 @@ BattleField = Backbone.Model.extend({
 		status:"normal"
     },
     initialize: function(){
-		this.chips = new ChipCollection();
     }
 });
 

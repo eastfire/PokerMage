@@ -45,7 +45,9 @@ Crafty.scene("battle", function() {
 					battleStatus.set({"timing":"ing"});
 			}, 100)
 		},this).on("attack-ing",function(){
-			
+			for ( var cid in ChipEntities )	{
+				var chip = ChipEntities[cid];
+			}
 			timer.delay(function() {
 					battleStatus.set({"timing":"end"});
 			}, 100)

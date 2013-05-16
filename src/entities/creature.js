@@ -1,5 +1,6 @@
 Crafty.c("Creature", {
 	init:function(){
+		this.requires("Collision");
 	},
 	_enterFrame:function(){
 		this.attIconEntity.attr({x:this.x+11,y:this.y+11, z:this.z});
@@ -10,6 +11,7 @@ Crafty.c("Creature", {
 		this.hpEntity.text(this.model.getHP()).attr({x:this.x+83,y:this.y+8, z:this.z});
 		//this.vpIconEntity.attr({x:this.x+74,y:this.y+71, z:this.z});
 		//this.vpEntity.text(this.model.getVP()).attr({x:this.x+83,y:this.y+67, z:this.z});
+		this.move();
 	},
 	_onClicked:function(){
 	},
@@ -96,6 +98,23 @@ Crafty.c("Creature", {
 		this.attEntity.attr({visible:false});
 		this.hpIconEntity.attr({visible:false});
 		this.hpEntity.attr({visible:false});
+	},
+	move:function(){
+		if ( this.model.get("owner") == 1){
+			if ( this.has("newCreate") ){
+				this.x += 4;
+				if ( this.x >= battleField[0][0].x)	{
+					this.removeComponent("newCreate");
+				}
+			} else {
+				if (this.hit("S-chip-"+this.model.get("owner") ) || this.hit("pushing") ) {
+					this.addComponent("pushing");
+					this.x += 4;
+				} else {
+					this.removeComponent("pushing");
+				}
+			}
+		}
 	}
 });
 
