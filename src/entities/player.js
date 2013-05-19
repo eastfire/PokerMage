@@ -38,6 +38,23 @@ Crafty.c("PlayerHand", {
 
 	},
 	_enterFrame:function(){
+		
+	},
+	playerHand:function(options){
+		this.player = options.player;
+		this.manas = this.player.manas;
+		this.manaEntities = {};
+
+		//this.bind('EnterFrame', this._enterFrame)
+
+		this.player.on("destroy",this.onDie,this);
+		this.manas.on("add",this._onAddMana,this);
+		this.manas.on("remove",this._onRemoveMana,this);
+		this.manas.on("reset",this._onResetMana,this);
+		
+		return this;
+	},
+	_refreshCardPosition:function(){
 		var left = this.x;
 		var top = this.y;
 		var self = this;
@@ -50,31 +67,20 @@ Crafty.c("PlayerHand", {
 			left += 50;
 		};
 	},
-	playerHand:function(options){
-		this.player = options.player;
-		this.manas = this.player.manas;
-		this.manaEntities = {};
-
-		this.bind('EnterFrame', this._enterFrame)
-
-		this.player.on("destroy",this.onDie,this);
-		this.manas.on("add",this._onAddMana,this);
-		this.manas.on("remove",this._onRemoveMana,this);
-		this.manas.on("reset",this._onResetMana,this);
-		
-		return this;
-	},
-		
 	_onAddMana:function(model,collection,options){
 		this.manaEntities[model.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", ManaCard")
 					.attr({x:0,y:0})
 					.manaCard({model: model, size:"M"});
+		this._refreshCardPosition();
 	},
 	
 	_onRemoveMana:function(model,collection,options){
 		//handled by mana itsself
+		this._refreshCardPosition();
 	},
-	
+	_onResetMana:function(collection,options){
+		collection.each(this._onAddMana, this);
+	},
 	onDie:function(){
 		this.destroy();
 	}

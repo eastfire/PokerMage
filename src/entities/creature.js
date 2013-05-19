@@ -15,6 +15,7 @@ Crafty.c("Creature", {
 		//this.vpIconEntity.attr({x:this.x+74,y:this.y+71, z:this.z});
 		//this.vpEntity.text(this.model.getVP()).attr({x:this.x+83,y:this.y+67, z:this.z});
 		this.move();
+		this.rangeAttack();
 	},
 	_onClicked:function(){
 	},
@@ -98,9 +99,20 @@ Crafty.c("Creature", {
 			var hit;
 			if ( hit = this.hit("S-chip-"+(3-this.model.get("owner")) ) ){
 				var opponent = hit[0].obj;
-				this.takeDamage( opponent.attack() );
-				opponent.takeDamage( this.attack() );
+				if ( this.model.getAttackType() === "melee"){
+					opponent.takeDamage( this.attack() );
+				}
+				if ( opponent.model.getAttackType() === "melee"){
+					this.takeDamage( opponent.attack() );
+				}				
 				this.x += 50;
+			}
+		}
+	},
+	rangeAttack:function(){
+		if ( this.model.getAttackType() === "range") {
+			if ( this.model.noNeedCoolDown() ) {
+				console.log("range attck");
 			}
 		}
 	}
@@ -114,7 +126,8 @@ Creature = Chip.extend({
 			hp : 3,
 			vp : 1,
 			w:100,
-			h:100
+			h:100,
+			coolDown : 0
 		});
     },
     initialize: function(){
@@ -138,5 +151,20 @@ Creature = Chip.extend({
 	},
 	getVP:function(){
 		return this.get("spell").get("vp");
+	},
+	getDamageType:function(){
+		return this.get("spell").get("damageType");
+	},
+	getAttackType:function(){
+		return this.get("spell").get("attackType");
+	},
+	noNeedCoolDown:function(){
+		var c = this.get("coolDown");
+		if ( c >= this.get("spell").get("coolDown") ){
+			this.set("coolDown",0);
+			return true;
+		}
+		this.set("coolDown",c+1);
+		return false;
 	}
 });

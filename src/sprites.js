@@ -111,6 +111,31 @@ Sprites = Backbone.Model.extend({
 					'Menu-skeleton-warrior' : [0, 0]
 				}
 			},
+			'skeletonWarriorL' : {
+				'file' : 'web/images/skeleton-warrior-l.png',
+				'tile' : 300,
+				'tileh' : 300,
+				'elements': {
+					'L-skeleton-warrior' : [0, 0]
+				}
+			},
+			'skeletonArchorS' : {
+				'file' : 'web/images/skeleton-archor-s.png',
+				'tile' : 60,
+				'tileh' : 60,
+				'elements': {
+					'S-skeleton-archor' : [0, 0],
+					'Menu-skeleton-archor' : [0, 0]
+				}
+			},
+			'skeletonArchorL' : {
+				'file' : 'web/images/skeleton-archor-l.png',
+				'tile' : 300,
+				'tileh' : 300,
+				'elements': {
+					'L-skeleton-archor' : [0, 0]
+				}
+			},
 			'humanWarriorL' : {
 				'file' : 'web/images/human-warrior-l.png',
 				'tile' : 300,
@@ -126,14 +151,6 @@ Sprites = Backbone.Model.extend({
 				'elements': {
 					'S-human-warrior' : [0, 0],
 					'Menu-human-warrior' : [0, 0]
-				}
-			},
-			'skeletonWarriorL' : {
-				'file' : 'web/images/skeleton-warrior-l.png',
-				'tile' : 300,
-				'tileh' : 300,
-				'elements': {
-					'L-skeleton-warrior' : [0, 0]
 				}
 			},
 			"hpIcon":{

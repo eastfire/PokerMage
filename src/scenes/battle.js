@@ -137,6 +137,21 @@ Crafty.scene("battle", function() {
 			hp:3,
 			att:1,
 			def:0,
+			damageType:"physical",
+			attackType:"melee",
+			owner:1
+		},{
+			cost: "pair",
+			amount:"2",
+			name:"skeleton-archor",
+			label:"骷髅弓箭手",
+			type:"creature",
+			hp:2,
+			att:1,
+			def:0,
+			damageType:"physical",
+			attackType:"range",
+			coolDown:150,
 			owner:1
 		}]);
 		player[2].get("book").add([{
@@ -149,6 +164,8 @@ Crafty.scene("battle", function() {
 			hp:5,
 			att:1,
 			def:0,
+			damageType:"physical",
+			attackType:"melee",
 			owner:1
 		}]);
 
