@@ -93,7 +93,7 @@ Crafty.c("ManaCard", {
 		this.numberEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
 			.attr({w: 20, h: 20, x: this.x + this.offsetX, y: this.y + this.offsetY, z: this.z})
 					.text(num)
-					.textColor('#000')
+					.textColor('#000000')
 					.textFont({'size' : CONST.FontMap[options.size], 'family': 'Arial', "weight": 'bold'});
 		return this;
 	},

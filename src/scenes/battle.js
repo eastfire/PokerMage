@@ -24,7 +24,7 @@ Crafty.scene("battle", function() {
 	//when everything is loaded, run the main scene
 	require(elements, function() {
 		var self = this;
-
+		var row = 0;
 		timer = Crafty.e("Delay");
 		battleStatus = new BattleStatus();
 
@@ -33,6 +33,14 @@ Crafty.scene("battle", function() {
 					battleStatus.set({"timing":"ing"});
 			}, 100)
 		},this).on("start-ing",function(){
+			if ( Math.random() > 0.9 ){
+				var creature = new Creature({x:1280,y:row*105,z:1,owner:2,spell:player[2].get("book").at(0) });
+				ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature")
+						.chip({model: creature}).creature({model: creature});
+				row++;
+				if ( row >= 5)
+					row = 0;
+			}
 			timer.delay(function() {
 					battleStatus.set({"timing":"end"});
 			}, 100)
@@ -160,7 +168,8 @@ Crafty.scene("battle", function() {
 					.playerHand({player:playingPlayer[1]}).attr({x:150,y:620,z:2});
 
 		playerAvatar[1] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", PlayerAvatar")
-			.playerAvatar({player:playingPlayer[1]}).attr({x:10,y:570});
+			.attr({x:10,y:570})
+			.playerAvatar({player:playingPlayer[1]});
 		
 		for ( var i = 0; i < 5 ; i++){
 			battleField[i] = [];
@@ -173,6 +182,8 @@ Crafty.scene("battle", function() {
 				.summonField({model: new SummonField({x:10,y:105*i,z:1,owner:1}),index:i});
 
 		}
+		for ( var i = 0 ; i < 5 ; i++ )
+				playingPlayer[1].manas.add(new ManaCard({number:randomNumber(),suit:randomSuit()}));
 
 		battleStatus.trigger("start-begin",battleStatus);
 	});

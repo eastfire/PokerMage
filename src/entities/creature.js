@@ -3,12 +3,15 @@ Crafty.c("Creature", {
 		this.requires("Collision");
 	},
 	_enterFrame:function(){
-		this.attIconEntity.attr({x:this.x+11,y:this.y+11, z:this.z});
-		this.attEntity.text(this.model.getAttack()).attr({x:this.x+20,y:this.y+8, z:this.z});
-		this.defIconEntity.attr({x:this.x+11,y:this.y+71, z:this.z});
-		this.defEntity.text(this.model.getDefend()).attr({x:this.x+20,y:this.y+67, z:this.z});
-		this.hpIconEntity.attr({x:this.x+74,y:this.y+11, z:this.z});
-		this.hpEntity.text(this.model.getHP()).attr({x:this.x+83,y:this.y+8, z:this.z});
+		this.attEntity.text(this.model.getAttack())
+		this.defEntity.text(this.model.getDefend())
+		this.hpEntity.text(this.model.getHP())
+		//this.attIconEntity.attr({x:this.x+11,y:this.y+11, z:this.z});
+		//this.attEntity.text(this.model.getAttack()).attr({x:this.x+20,y:this.y+8, z:this.z});
+		//this.defIconEntity.attr({x:this.x+11,y:this.y+71, z:this.z});
+		//this.defEntity.text(this.model.getDefend()).attr({x:this.x+20,y:this.y+67, z:this.z});
+		//this.hpIconEntity.attr({x:this.x+74,y:this.y+11, z:this.z});
+		//this.hpEntity.text(this.model.getHP()).attr({x:this.x+83,y:this.y+8, z:this.z});
 		//this.vpIconEntity.attr({x:this.x+74,y:this.y+71, z:this.z});
 		//this.vpEntity.text(this.model.getVP()).attr({x:this.x+83,y:this.y+67, z:this.z});
 		this.move();
@@ -17,39 +20,39 @@ Crafty.c("Creature", {
 	},
 	creature:function(options){
 		this.model = options.model;
-		this.index = options.index;
 		this.attr(this.model.toJSON())
 //			.bind('EnterFrame', this._enterFrame)
 			.bind('Click', this._onClicked)
 		this.origin(this.w/2, this.h/2);
-		this.model.on("destroy",this.onDie,this);
+		this.model.on("die",this.onCreatureDie,this);
 
 		this.attr(options).bind('EnterFrame', this._enterFrame).bind('Click', this._onClicked);
 		
 		this.attIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Att-icon")
 			.attr({w: 18, h: 18, x: this.x + 11, y: this.y + 11, z: this.z})
 		this.attEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
-			.attr({w: 18, h: 18, x: this.x + 5, y: this.y + 0, z: this.z})
-					.text(this.att)
+			.attr({w: 18, h: 18, x: this.x + 20, y: this.y + 8, z: this.z})
+					.text("")
 					.textColor('#000000')
 					.textFont({'size' : "15px", 'family': 'Arial', "weight": 'bold'})
 					.textAlign("center");
 		this.defIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Def-icon")
-			.attr({w: 18, h: 18, x: this.x + 11, y: this.y + 11, z: this.z})
+			.attr({w: 18, h: 18, x: this.x + 11, y: this.y + 71, z: this.z})
 		this.defEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
-			.attr({w: 18, h: 18, x: this.x + 5, y: this.y + 0, z: this.z})
-					.text(this.def)
+			.attr({w: 18, h: 18, x: this.x + 20, y: this.y + 67, z: this.z})
+					.text("")
 					.textColor('#000000')
 					.textFont({'size' : "15px", 'family': 'Arial', "weight": 'bold'})
 					.textAlign("center");
 		this.hpIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Hp-icon")
-			.attr({w: 18, h: 18, x: this.x + 71, y: this.y, z: this.z})
+			.attr({w: 18, h: 18, x: this.x + 74, y: this.y+11, z: this.z})
 		this.hpEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
-			.attr({w: 18, h: 18, x: this.x + 67, y: this.y + 0, z: this.z})
-					.text(this.hp)
+			.attr({w: 18, h: 18, x: this.x + 83, y: this.y + 8, z: this.z})
+					.text("")
 					.textColor('#000000')
 					.textFont({'size' : "15px", 'family': 'Arial', "weight": 'bold'})
 					.textAlign("center");
+		this.attach(this.attIconEntity, this.attEntity, this.defIconEntity, this.defEntity, this.hpIconEntity, this.hpEntity);
 		/*this.vpIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Vp-icon")
 			.attr({w: 18, h: 18, x: this.x + 74, y: this.y, z: this.z})
 		this.vpEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Text")
@@ -61,43 +64,18 @@ Crafty.c("Creature", {
 		return this;
 	},
 	attack:function(){
-		var orginY = this.attr("y");
-		var self = this;
-		var treasure = treasureHoard[this.index];
-		var oppositeChip = playingPlayer[3-this.owner].battleField[this.index].chip;
-		if ( treasure.model.get("status") === "normal" && treasure.model.get("vp") > 0 ) {
-			this.tween({y:this.owner===1?(treasure.attr("y")+treasure.attr("h")):(treasure.attr("y") - this.attr("h")) },15);
-			timer.delay(function() {
-				var amount = treasure.model.takeVP(self.model.getAttack());
-				playingPlayer[self.owner].changeVP(amount);
-				self.tween({y:orginY},15);
-			}, 500);
-		} else if ( oppositeChip && oppositeChip.has("Creature") ){
-			this.tween({y:treasure.attr("y")+treasure.attr("h")/2 - ( this.owner===1?0 : this.attr("h") ) },15);
-			timer.delay(function() {
-				self.tween({y:orginY},15);
-			}, 500);
-		} else {
-
-		}
-
+		return this.model.getAttack();
 	},
-	takeDamage:function(amount, color){
-
+	takeDamage:function(amount){
+		this.model.takeDamage(amount)
 	},
-	onDie:function(){
-		this.attIconEntity.destory();
-		this.attEntity.destory();
-		this.hpIconEntity.destory();
+	onCreatureDie:function(){
+		this.attIconEntity.destroy();
+		this.attEntity.destroy();
+		this.hpIconEntity.destroy();
 		this.hpEntity.destroy();
-		this.vpIconEntity.destory();
-		this.vpEntity.destroy();
-	},
-	beStacked:function(){
-		this.attIconEntity.attr({visible:false});
-		this.attEntity.attr({visible:false});
-		this.hpIconEntity.attr({visible:false});
-		this.hpEntity.attr({visible:false});
+		this.defIconEntity.destroy();
+		this.defEntity.destroy();
 	},
 	move:function(){
 		if ( this.model.get("owner") == 1){
@@ -114,6 +92,16 @@ Crafty.c("Creature", {
 					this.removeComponent("pushing");
 				}
 			}
+		} else {
+			this.removeComponent("newCreate");
+			this.x -= 1;
+			var hit;
+			if ( hit = this.hit("S-chip-"+(3-this.model.get("owner")) ) ){
+				var opponent = hit[0].obj;
+				this.takeDamage( opponent.attack() );
+				opponent.takeDamage( this.attack() );
+				this.x += 50;
+			}
 		}
 	}
 });
@@ -124,26 +112,31 @@ Creature = Chip.extend({
 			x : 0,
 			y : 0,
 			hp : 3,
-			att : 1,
-			def : 0,
 			vp : 1,
 			w:100,
 			h:100
 		});
     },
     initialize: function(){
-		this.set("hp", this.get("spell").get("hp"));
+		this.set("hp", this.get("spell").get("hp"));		
     },
+	takeDamage:function(amount){
+		var damage = Math.max( amount - this.getDefend(), 0 );
+		this.set("hp", Math.max( this.get("hp") - amount, 0 ) );
+		if ( this.get("hp") == 0 )	{
+			this.trigger("die",this);
+		}
+	},
 	getAttack:function(){
-		return this.get("att");
+		return this.get("spell").get("att");
 	},
 	getDefend:function(){
-		return this.get("def");
+		return this.get("spell").get("def");
 	},
 	getHP:function(){
 		return this.get("hp");
 	},
 	getVP:function(){
-		return this.get("vp");
+		return this.get("spell").get("vp");
 	}
 });
