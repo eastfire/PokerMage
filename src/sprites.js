@@ -209,6 +209,14 @@ Sprites = Backbone.Model.extend({
 					'TreasureHoardOk' : [0, 0],
 					'TreasureHoardForbiden' : [1, 0]
 				}
+			},
+			"arrow":{
+				'file' : 'web/images/range-arrow.png',
+				'tile' : 50,
+				'tileh' : 7,
+				'elements': {
+					'range-arrow' : [0, 0]
+				}
 			}
         }
     },

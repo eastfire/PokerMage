@@ -20,7 +20,7 @@ PlayingPlayer = Backbone.Model.extend({
 		vp:0,
 		hp:20,
 		manaIncome:1,
-		handLimit:7
+		handLimit:17
     },
     initialize: function(){
 		this.book = this.get("player").get("book").clone();

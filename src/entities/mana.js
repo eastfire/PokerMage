@@ -112,8 +112,6 @@ ManaCard = Backbone.Model.extend({
 	defaults: {
 		number:2,
 		suit:1,
-		x:0,
-		y:0,
 		owner:1
     },
     initialize: function(){		

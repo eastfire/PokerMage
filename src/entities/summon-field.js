@@ -54,7 +54,7 @@ Crafty.c("SummonField", {
 			this.manas.pop().destroy();
 		var creature = new Creature({x:this.x+50,y:this.y,z:2,owner:this.owner,spell:creatureSpell});
 		var battleField = window.battleField[this.index][0];
-		ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature")
+		ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature,"+creatureSpell.get("name"))
 				.chip({model: creature}).creature({model: creature, index:this.index});
 	},
 	summonField:function(options){

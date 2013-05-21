@@ -6,18 +6,29 @@ Crafty.c("Creature", {
 		this.attEntity.text(this.model.getAttack())
 		this.defEntity.text(this.model.getDefend())
 		this.hpEntity.text(this.model.getHP())
-		//this.attIconEntity.attr({x:this.x+11,y:this.y+11, z:this.z});
-		//this.attEntity.text(this.model.getAttack()).attr({x:this.x+20,y:this.y+8, z:this.z});
-		//this.defIconEntity.attr({x:this.x+11,y:this.y+71, z:this.z});
-		//this.defEntity.text(this.model.getDefend()).attr({x:this.x+20,y:this.y+67, z:this.z});
-		//this.hpIconEntity.attr({x:this.x+74,y:this.y+11, z:this.z});
-		//this.hpEntity.text(this.model.getHP()).attr({x:this.x+83,y:this.y+8, z:this.z});
-		//this.vpIconEntity.attr({x:this.x+74,y:this.y+71, z:this.z});
-		//this.vpEntity.text(this.model.getVP()).attr({x:this.x+83,y:this.y+67, z:this.z});
 		this.move();
-		this.rangeAttack();
+		this._checkRangeAttack();
 	},
 	_onClicked:function(){
+	},
+	_onHitFriend:function(hit){
+
+	},
+	_onHitEnemy:function(hit){
+		var opponent = hit[0].obj;
+		if ( this.model.getAttackType() === "melee"){
+			opponent.takeDamage( this.attack() );
+		}
+		if ( opponent.model.getAttackType() === "melee"){
+			this.takeDamage( opponent.attack() );
+		}				
+		this.x += 50;
+	},
+	_onHitShot:function(hit){
+		var shot = hit[0].obj;
+		this.takeDamage( shot.att );
+		this.x += 5;
+		shot.destroy();
 	},
 	creature:function(options){
 		this.model = options.model;
@@ -27,7 +38,15 @@ Crafty.c("Creature", {
 		this.origin(this.w/2, this.h/2);
 		this.model.on("die",this.onCreatureDie,this);
 
-		this.attr(options).bind('EnterFrame', this._enterFrame).bind('Click', this._onClicked);
+		this.attr(options)
+			.bind('EnterFrame', this._enterFrame)
+			.bind('Click', this._onClicked);
+			
+
+		if ( this.model.get("owner")==2 ){
+			this.onHit("S-chip-"+(3-this.model.get("owner") ),this._onHitEnemy)
+				.onHit("range-shot",this._onHitShot);
+		}
 		
 		this.attIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Att-icon")
 			.attr({w: 18, h: 18, x: this.x + 11, y: this.y + 11, z: this.z})
@@ -95,26 +114,28 @@ Crafty.c("Creature", {
 			}
 		} else {
 			this.removeComponent("newCreate");
-			this.x -= 1;
-			var hit;
-			if ( hit = this.hit("S-chip-"+(3-this.model.get("owner")) ) ){
-				var opponent = hit[0].obj;
-				if ( this.model.getAttackType() === "melee"){
-					opponent.takeDamage( this.attack() );
-				}
-				if ( opponent.model.getAttackType() === "melee"){
-					this.takeDamage( opponent.attack() );
-				}				
-				this.x += 50;
+			this.x -= 1;			
+		}
+	},
+	_checkRangeAttack:function(){
+		if ( this.model.getAttackType() === "range") {
+			if ( this.model.noNeedCoolDown() ) {
+				this.rangeAttack();
 			}
 		}
 	},
 	rangeAttack:function(){
-		if ( this.model.getAttackType() === "range") {
-			if ( this.model.noNeedCoolDown() ) {
-				console.log("range attck");
-			}
-		}
+	}
+});
+
+Crafty.c("skeleton-archor", {
+	rangeAttack:function(){
+		var arrow =  Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Tween, range-arrow, range-shot")
+			.attr({x:this.x+50,y:this.y+50,z:1,damageType:this.model.getDamageType(), att:this.model.getAttack()})
+			.tween({x:this.x+1280},50)
+			.bind("TweenEnd",function(){
+				this.destroy();
+			});
 	}
 });
 
