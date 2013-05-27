@@ -64,7 +64,8 @@ Crafty.scene("battle", function() {
 					battleStatus.set({"phase":"mana","timing":"begin"});
 			}, 100)
 		},this).on("mana-begin",function(){
-			for ( var i = 0 ; i < playingPlayer[1].get("manaIncome") ; i++ )
+			var income = Math.min( playingPlayer[1].get("manaIncome"), playingPlayer[1].get("handLimit") - playingPlayer[1].manas.length );
+			for ( var i = 0 ; i < income ; i++ )
 				playingPlayer[1].manas.add(new ManaCard({number:randomNumber(),suit:randomSuit()}));
 			timer.delay(function() {
 					battleStatus.set({"timing":"ing"});
@@ -89,17 +90,7 @@ Crafty.scene("battle", function() {
 			timer.delay(function() {
 					battleStatus.set({"phase":"end","timing":"begin"});
 			}, 100)
-		},this).on("end-begin",function(){
-			if ( playingPlayer[1].manas.length > playingPlayer[1].get("handLimit") )
-			{
-				var toDel = [];
-				playingPlayer[1].manas.each(function(model){
-					toDel.push(model);
-				});
-				for ( var j=0; j<toDel.length;j++ )	{
-					toDel[j].destroy();
-				}
-			}
+		},this).on("end-begin",function(){			
 			timer.delay(function() {
 					battleStatus.set({"timing":"ing"});
 			}, 100)

@@ -27,6 +27,7 @@ Crafty.c("ManaCard", {
 		this.numberEntity.attr({x:this.x+this.offsetX,y:this.y+this.offsetY, z:this.z});
 	},
 	_onStartDrag:function(event){
+		window.isDragging = true;
 		this.isDragging = true;
 		this.originX = this.x;
 		this.originY = this.y;
@@ -53,6 +54,9 @@ Crafty.c("ManaCard", {
 		this.x = this.originX;
 		this.y = this.originY;
 		this.z = this.originZ;
+		setTimeout(function(){
+			window.isDragging = false;
+		},0);
 	},
 	manaCard:function(options){
 		this.model = options.model;

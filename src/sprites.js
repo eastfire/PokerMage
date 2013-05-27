@@ -213,7 +213,7 @@ Sprites = Backbone.Model.extend({
 			"arrow":{
 				'file' : 'web/images/range-arrow.png',
 				'tile' : 50,
-				'tileh' : 7,
+				'tileh' : 15,
 				'elements': {
 					'range-arrow' : [0, 0]
 				}

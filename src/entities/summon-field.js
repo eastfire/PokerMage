@@ -37,6 +37,8 @@ Crafty.c("SummonField", {
 		this.addComponent("SummonFieldValid").removeComponent("SummonFieldEmpty");
 	},	
 	_onClicked:function(event){
+		if ( window.isDragging )
+			return;
 		var spells = playingPlayer[this.owner].book.getValidSpells(this.manas.feature());
 		if ( spells.length ) {
 			Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenu")
@@ -46,7 +48,6 @@ Crafty.c("SummonField", {
 				});
 			this.showingMenu = true;
 		}
-		//this.summonCreature();
 	},
 	summonCreature:function(creatureSpell){
 		var len = this.manas.length;

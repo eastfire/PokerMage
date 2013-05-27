@@ -46,6 +46,9 @@ Crafty.c("Creature", {
 		if ( this.model.get("owner")==2 ){
 			this.onHit("S-chip-"+(3-this.model.get("owner") ),this._onHitEnemy)
 				.onHit("range-shot",this._onHitShot);
+		} else if ( this.model.get("owner")==1 ){
+			/*this.onHit("newCreate") ),this._onHitFriend)
+				.onHit("push",this._onHitFriend);*/
 		}
 		
 		this.attIconEntity = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Att-icon")
