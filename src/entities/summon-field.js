@@ -58,6 +58,14 @@ Crafty.c("SummonField", {
 		ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature,"+creatureSpell.get("name"))
 				.chip({model: creature}).creature({model: creature, index:this.index});
 	},
+	castSorcery:function(spell){
+		var len = this.manas.length;
+		for ( var i=0; i<len ; i++ )
+			this.manas.pop().destroy();
+		Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Sorcery,"+spell.get("name"))
+				.attr({x:this.x+50,y:this.y+40,z:2,owner:this.owner})
+				.cast({spell: spell});
+	},
 	summonField:function(options){
 		this.model = options.model;
 		this.index = options.index;
@@ -112,7 +120,11 @@ Crafty.c("SummonMenuItem", {
 	},
 	_onClicked:function(event){
 		this.menu.onDie();
-		this.summonField.summonCreature(this.spell);
+		if ( this.spell.get("type") == "creature" )	{
+			this.summonField.summonCreature(this.spell);
+		} else if ( this.spell.get("type") == "sorcery" ){
+			this.summonField.castSorcery(this.spell);
+		}
 	},
 	summonMenuItem:function(options){
 		this.spell = options.spell;

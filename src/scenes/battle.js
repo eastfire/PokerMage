@@ -7,6 +7,7 @@ Crafty.scene("battle", function() {
 		"src/entities/battle-field.js",
 		"src/entities/creature.js",
 		"src/entities/spell.js",
+		"src/entities/spell-lib.js",
 		"src/entities/player.js",
 		"src/entities/treasure-hoard.js",
 		"src/entities/unlockable.js",
@@ -143,6 +144,15 @@ Crafty.scene("battle", function() {
 			damageType:"physical",
 			attackType:"range",
 			coolDown:150,
+			owner:1
+		},{
+			cost: "pair",
+			amount:"1",
+			name:"fireball",
+			label:"火球术",
+			type:"sorcery",
+			damageType:"fire",
+			att:3,
 			owner:1
 		}]);
 		player[2].get("book").add([{

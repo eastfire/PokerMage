@@ -136,6 +136,23 @@ Sprites = Backbone.Model.extend({
 					'L-skeleton-archor' : [0, 0]
 				}
 			},
+			'fireballS' : {
+				'file' : 'web/images/fireball-s.png',
+				'tile' : 60,
+				'tileh' : 60,
+				'elements': {
+					'S-fireball' : [0, 0],
+					'Menu-fireball' : [0, 0]
+				}
+			},
+			'fireballL' : {
+				'file' : 'web/images/fireball-l.png',
+				'tile' : 300,
+				'tileh' : 300,
+				'elements': {
+					'L-fireball' : [0, 0]
+				}
+			},
 			'humanWarriorL' : {
 				'file' : 'web/images/human-warrior-l.png',
 				'tile' : 300,
@@ -216,6 +233,14 @@ Sprites = Backbone.Model.extend({
 				'tileh' : 15,
 				'elements': {
 					'range-arrow' : [0, 0]
+				}
+			},
+			"fireball":{
+				'file' : 'web/images/range-fireball.png',
+				'tile' : 50,
+				'tileh' : 27,
+				'elements': {
+					'range-fireball' : [0, 0]
 				}
 			}
         }

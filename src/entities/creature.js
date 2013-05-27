@@ -16,18 +16,19 @@ Crafty.c("Creature", {
 	},
 	_onHitEnemy:function(hit){
 		var opponent = hit[0].obj;
+		var d = 1;
 		if ( this.model.getAttackType() === "melee"){
-			opponent.takeDamage( this.attack() );
+			opponent.takeDamage( this.attack(), "melee", this.damageType() );
 		}
 		if ( opponent.model.getAttackType() === "melee"){
-			this.takeDamage( opponent.attack() );
+			d += this.takeDamage( opponent.attack(), "melee", opponent.damageType() );
 		}				
-		this.x += 50;
+		this.x += 20*d;
 	},
 	_onHitShot:function(hit){
 		var shot = hit[0].obj;
-		this.takeDamage( shot.att );
-		this.x += 5;
+		var d = this.takeDamage( shot.att, "range", shot.damageType );
+		this.x += 10*d;
 		shot.destroy();
 	},
 	creature:function(options){
@@ -89,8 +90,14 @@ Crafty.c("Creature", {
 	attack:function(){
 		return this.model.getAttack();
 	},
-	takeDamage:function(amount){
-		this.model.takeDamage(amount)
+	attackType:function(){
+		return this.model.getAttackType();
+	},
+	damageType:function(){
+		return this.model.getDamageType();
+	},
+	takeDamage:function(amount,attackType,damageType){
+		return this.model.takeDamage(amount,attackType,damageType)
 	},
 	onCreatureDie:function(){
 		this.attIconEntity.destroy();
@@ -131,17 +138,6 @@ Crafty.c("Creature", {
 	}
 });
 
-Crafty.c("skeleton-archor", {
-	rangeAttack:function(){
-		var arrow =  Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Tween, range-arrow, range-shot")
-			.attr({x:this.x+50,y:this.y+50,z:1,damageType:this.model.getDamageType(), att:this.model.getAttack()})
-			.tween({x:this.x+1280},50)
-			.bind("TweenEnd",function(){
-				this.destroy();
-			});
-	}
-});
-
 Creature = Chip.extend({
 	defaults: function(){
 		return _.extend(Chip.prototype.defaults.call(this), {
@@ -157,12 +153,13 @@ Creature = Chip.extend({
     initialize: function(){
 		this.set("hp", this.get("spell").get("hp"));		
     },
-	takeDamage:function(amount){
+	takeDamage:function(amount,attackType,damageType){
 		var damage = Math.max( amount - this.getDefend(), 0 );
 		this.set("hp", Math.max( this.get("hp") - amount, 0 ) );
 		if ( this.get("hp") == 0 )	{
 			this.trigger("die",this);
 		}
+		return damage;
 	},
 	getAttack:function(){
 		return this.get("spell").get("att");
