@@ -102,74 +102,6 @@ Sprites = Backbone.Model.extend({
 					'S-chip-summon-field-enchantment' : [2, 0],
 				}
 			},
-			'skeletonWarriorS' : {
-				'file' : 'web/images/skeleton-warrior-s.png',
-				'tile' : 60,
-				'tileh' : 60,
-				'elements': {
-					'S-skeleton-warrior' : [0, 0],
-					'Menu-skeleton-warrior' : [0, 0]
-				}
-			},
-			'skeletonWarriorL' : {
-				'file' : 'web/images/skeleton-warrior-l.png',
-				'tile' : 300,
-				'tileh' : 300,
-				'elements': {
-					'L-skeleton-warrior' : [0, 0]
-				}
-			},
-			'skeletonArchorS' : {
-				'file' : 'web/images/skeleton-archor-s.png',
-				'tile' : 60,
-				'tileh' : 60,
-				'elements': {
-					'S-skeleton-archor' : [0, 0],
-					'Menu-skeleton-archor' : [0, 0]
-				}
-			},
-			'skeletonArchorL' : {
-				'file' : 'web/images/skeleton-archor-l.png',
-				'tile' : 300,
-				'tileh' : 300,
-				'elements': {
-					'L-skeleton-archor' : [0, 0]
-				}
-			},
-			'fireballS' : {
-				'file' : 'web/images/fireball-s.png',
-				'tile' : 60,
-				'tileh' : 60,
-				'elements': {
-					'S-fireball' : [0, 0],
-					'Menu-fireball' : [0, 0]
-				}
-			},
-			'fireballL' : {
-				'file' : 'web/images/fireball-l.png',
-				'tile' : 300,
-				'tileh' : 300,
-				'elements': {
-					'L-fireball' : [0, 0]
-				}
-			},
-			'humanWarriorL' : {
-				'file' : 'web/images/human-warrior-l.png',
-				'tile' : 300,
-				'tileh' : 300,
-				'elements': {
-					'L-human-warrior' : [0, 0]
-				}
-			},
-			'humanWarriorS' : {
-				'file' : 'web/images/human-warrior-s.png',
-				'tile' : 60,
-				'tileh' : 60,
-				'elements': {
-					'S-human-warrior' : [0, 0],
-					'Menu-human-warrior' : [0, 0]
-				}
-			},
 			"hpIcon":{
 				'file' : 'web/images/hp-icon.png',
 				'tile' : 24,
@@ -218,7 +150,7 @@ Sprites = Backbone.Model.extend({
 					'hand-limit-icon' : [0, 0]
 				}
 			},
-			"treasureHoard":{
+/*			"treasureHoard":{
 				'file' : 'web/images/treasure-hoard.png',
 				'tile' : 160,
 				'tileh' : 110,
@@ -226,7 +158,7 @@ Sprites = Backbone.Model.extend({
 					'TreasureHoardOk' : [0, 0],
 					'TreasureHoardForbiden' : [1, 0]
 				}
-			},
+			},*/
 			"arrow":{
 				'file' : 'web/images/range-arrow.png',
 				'tile' : 50,
