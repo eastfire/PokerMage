@@ -12,6 +12,7 @@ Crafty.scene("battle", function() {
 		"src/entities/treasure-hoard.js",
 		"src/entities/unlockable.js",
 		"src/entities/global-mask.js",
+		"src/entities/wave.js",
 	];	
 
 	var self =this;
@@ -21,6 +22,9 @@ Crafty.scene("battle", function() {
 	};
 	randomSuit = function(){
 		return Math.floor(Math.random()*4)+1;
+	};
+	randomRow = function(){
+		return Math.floor(Math.random()*5);
 	}
 	//when everything is loaded, run the main scene
 	require(elements, function() {
@@ -34,14 +38,14 @@ Crafty.scene("battle", function() {
 					battleStatus.set({"timing":"ing"});
 			}, 100)
 		},this).on("start-ing",function(){
-			if ( Math.random() > 0.9 ){
+			/*if ( Math.random() > 0.9 ){
 				var creature = new Creature({x:1280,y:row*105,z:1,owner:2,spell:player[2].get("book").at(0) });
 				ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature")
 						.chip({model: creature}).creature({model: creature});
 				row++;
 				if ( row >= 5)
 					row = 0;
-			}
+			}*/
 			timer.delay(function() {
 					battleStatus.set({"timing":"end"});
 			}, 100)
@@ -111,7 +115,59 @@ Crafty.scene("battle", function() {
 		playingPlayer = [];
 		playerAvatar = [];
 		battleField = [];
+		waves = new WaveCollection();
+		
+		initWaves = function(){
+			waves.reset([{
+				delay:1000,
+				enemies:[
+					{
+						row : 0,
+						name: "human-warrior"
+					},
+					{
+						row : "random",
+						name: "human-warrior"
+					}
+				]
+			},{
+				delay:10000,
+				enemies:[
+					{
+						row : 1,
+						name: "human-warrior"
+					},
+					{
+						row : "random",
+						name: "human-warrior"
+					}
+				]
+			}]);
+		}
+		initWaves();
 
+		nextWave = function() {
+			var currentWave = waves.shift();
+			if ( !currentWave )
+				return;
+			(function(wave){
+				timer.delay(function() {
+					var enemies = wave.get("enemies");
+					if ( typeof enemies === "function"){
+						enemies = enemies.call(wave);
+					}
+					for ( var i = 0; i < enemies.length ; i++){
+						var enemy = enemies[i];
+						var row = (enemy.row === "random") ? randomRow() : enemy.row;
+						var creature = new Creature({x:1280,y:row*105,z:1,owner:2,spell:player[2].get("book").get(enemy.name) });
+						ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature")
+								.chip({model: creature}).creature({model: creature});
+					}
+					nextWave();
+				}, wave.get("delay"));
+			})(currentWave);
+		}
+		
 		player[1] = new Player({
 			"name":"player1",
 			"portrait":"./web/images/player-portrait.png"
@@ -202,6 +258,8 @@ Crafty.scene("battle", function() {
 		}
 		for ( var i = 0 ; i < 5 ; i++ )
 				playingPlayer[1].manas.add(new ManaCard({number:randomNumber(),suit:randomSuit()}));
+
+		nextWave();
 
 		battleStatus.trigger("start-begin",battleStatus);
 	});
