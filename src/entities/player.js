@@ -28,8 +28,11 @@ PlayingPlayer = Backbone.Model.extend({
 		this.battleField = [];
 		this.manas = new ManaCollection();
     },
-	changeVP:function(amount){
-		this.set("vp",Math.max(0,this.get("vp")+amount) );
+	takeDamage: function(amount,attackType,damageType){
+		var hp = this.get("hp");
+		var a = Math.min(hp, amount);
+		this.set("hp", hp - a );
+		return a;
 	}
 });
 
@@ -98,6 +101,7 @@ Crafty.c("PlayerAvatar", {
 		this.handLimitEntity.text(this.player.get("handLimit")).attr({x: this.attr("x") + 72, y: this.attr("y")+100, z: this.z});*/
 		this.manaIncomeEntity.text(this.player.get("manaIncome"));
 		this.handLimitEntity.text(this.player.get("handLimit"));
+		this.hpEntity.text(this.player.get("hp"));
 	},
 	playerAvatar:function(options){
 		this.player = options.player;

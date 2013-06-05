@@ -1,6 +1,5 @@
 Crafty.c("Creature", {
-	init:function(){
-		this.requires("Collision");
+	init:function(){		
 	},
 	_enterFrame:function(){
 		this.attEntity.text(this.model.getAttack())
@@ -12,7 +11,13 @@ Crafty.c("Creature", {
 	_onClicked:function(){
 	},
 	_onHitFriend:function(hit){
-
+	},
+	_onHitSummonField:function(hit){
+		var field = hit[0].obj;
+		if ( this.model.getAttackType() === "melee"){
+			field.takeDamage( this.attack(), "melee", this.damageType() );
+		}
+		this.x += 20;
 	},
 	_onHitEnemy:function(hit){
 		var opponent = hit[0].obj;
@@ -43,10 +48,11 @@ Crafty.c("Creature", {
 			.bind('EnterFrame', this._enterFrame)
 			.bind('Click', this._onClicked);
 			
-
+		this.addComponent("Collision");
 		if ( this.model.get("owner")==2 ){
 			this.onHit("S-chip-"+(3-this.model.get("owner") ),this._onHitEnemy)
-				.onHit("range-shot",this._onHitShot);
+				.onHit("range-shot",this._onHitShot)
+				.onHit("SummonField",this._onHitSummonField);
 		} else if ( this.model.get("owner")==1 ){
 			/*this.onHit("newCreate") ),this._onHitFriend)
 				.onHit("push",this._onHitFriend);*/

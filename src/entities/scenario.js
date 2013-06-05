@@ -19,10 +19,13 @@ ScenarioModel = Backbone.Model.extend({
 	stop:function(){
 		this.set("status","stopped");
 	},
+	getWave:function(){
+		return this.get("waves").shift();
+	},
 	nextWave:function() {
 		if ( this.get("status") === "stopped" )
 			return;
-		var currentWave = this.get("waves").shift();
+		var currentWave = this.getWave();
 		if ( !currentWave )
 			return;
 		var self = this;
@@ -47,10 +50,34 @@ ScenarioModel = Backbone.Model.extend({
 
 scenario1 = new ScenarioModel();
 scenario1.get("waves").reset([{
-		delay:1000,
+		delay:2000,
 		enemies:[
 			{
 				row : 0,
+				name: "human-warrior"
+			},
+			{
+				row : "random",
+				name: "human-warrior"
+			}
+		]
+	},{
+		delay:10000,
+		enemies:[
+			{
+				row : 1,
+				name: "human-warrior"
+			},
+			{
+				row : "random",
+				name: "human-warrior"
+			}
+		]
+	},{
+		delay:10000,
+		enemies:[
+			{
+				row : 1,
 				name: "human-warrior"
 			},
 			{

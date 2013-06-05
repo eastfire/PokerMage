@@ -93,7 +93,9 @@ Crafty.c("SummonField", {
 	_onRemoveMana:function(model,collection,options){
 		//handled by mana itsself
 	},
-	
+	takeDamage:function(amount,attackType,damageType){
+		return this.model.takeDamage(amount,attackType,damageType)
+	},
 	onDie:function(){
 		this.destroy();
 	}
@@ -107,7 +109,10 @@ SummonField = Backbone.Model.extend({
 		enable:true
     },
     initialize: function(){
-    }
+    },
+	takeDamage: function(amount,attackType,damageType){
+		playingPlayer[this.get("owner")].takeDamage(amount,attackType,damageType)
+	}
 });
 
 SummonFieldCollection = Backbone.Collection.extend({
