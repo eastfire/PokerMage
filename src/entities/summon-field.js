@@ -159,7 +159,7 @@ Crafty.c("SummonMenu", {
 		var left = this.summonField.x + this.summonField.w/2-(this.spells.length/2)*66;
 		var top = this.summonField.y + this.summonField.h/2 - 55 ;
 		_.each( this.spells, function(spell){
-			var item = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenuItem, Menu-"+spell.get("name"))
+			var item = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenuItem, MouseHoverTips, Menu-"+spell.get("name"))
 				.summonMenuItem({
 					spell:spell,
 					menu:this,
@@ -168,7 +168,8 @@ Crafty.c("SummonMenu", {
 				.attr({
 					x:left,
 					y:top,
-					z:101
+					z:101,
+					title:spell.get("label")
 				});
 			this.spellMenuItems.push(item);
 			left += 66;

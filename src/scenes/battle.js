@@ -1,5 +1,6 @@
 Crafty.scene("battle", function() {
 	var elements = [
+		"src/components/MouseHoverTips.js",
 		"src/entities/game-status.js",
 		"src/entities/mana.js",
 		"src/entities/chip.js",
