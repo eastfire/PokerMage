@@ -32,7 +32,7 @@ Crafty.c("ManaCard", {
 		this.originX = this.x;
 		this.originY = this.y;
 		this.originZ = this.z;
-		this.z = 99;
+		this.z = 103;
 	},
 	_onDragging:function(event){
 		

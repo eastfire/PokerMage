@@ -36,17 +36,19 @@ Crafty.c("SummonField", {
 	showValid:function(){
 		this.addComponent("SummonFieldValid").removeComponent("SummonFieldEmpty");
 	},	
-	_onClicked:function(event){
-		if ( window.isDragging )
-			return;
+	_updateMenu:function(){
 		var spells = playingPlayer[this.owner].book.getValidSpells(this.manas.feature());
+		if ( this.menu )
+			this.menu.onDie();
 		if ( spells.length ) {
-			Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenu")
+			this.menu = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenu")
 				.summonMenu({
 					spells: spells,
 					summonField:this
 				});
 			this.showingMenu = true;
+		} else {
+			this.showingMenu = false;
 		}
 	},
 	summonCreature:function(creatureSpell){
@@ -71,10 +73,9 @@ Crafty.c("SummonField", {
 		this.index = options.index;
 		this.manas = new ManaCollection();
 		this.manaEntities = {};
-		this.addComponent("SummonFieldEmpty","Collision","Mouse");
+		this.addComponent("SummonFieldEmpty","Collision");
 		this.attr(this.model.toJSON())
 			.bind('EnterFrame', this._enterFrame)
-			.bind('Click', this._onClicked)
 		this.origin(this.w/2, this.h/2);
 
 		this.model.on("destroy",this.onDie,this);
@@ -88,10 +89,15 @@ Crafty.c("SummonField", {
 	_onAddMana:function(model,collection,options){
 		this.manaEntities[model.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", ManaCard")
 					.manaCard({model: model, fix:true, size:"S"});
+		this._updateMenu();
 	},
 	
 	_onRemoveMana:function(model,collection,options){
-		//handled by mana itsself
+		this._updateMenu();
+	},
+
+	_onResetMana:function(collection,options){
+		this._updateMenu();
 	},
 	takeDamage:function(amount,attackType,damageType){
 		return this.model.takeDamage(amount,attackType,damageType)
@@ -124,6 +130,8 @@ Crafty.c("SummonMenuItem", {
 
 	},
 	_onClicked:function(event){
+		if ( window.isDragging )
+			return;
 		this.menu.onDie();
 		if ( this.spell.get("type") == "creature" )	{
 			this.summonField.summonCreature(this.spell);
@@ -174,11 +182,11 @@ Crafty.c("SummonMenu", {
 			this.spellMenuItems.push(item);
 			left += 66;
 		},this);
-		globalMask.attr("visible",true);
+		/*globalMask.attr("visible",true);
 		var self = this;
 		Crafty.bind("global-mask-clicked",function(){
 			self.onDie();
-		});
+		});*/
 		return this;
 	},
 	
@@ -187,7 +195,7 @@ Crafty.c("SummonMenu", {
 			item.onDie();
 		});
 		this.summonField.showingMenu = false;
-		globalMask.attr("visible",false);
+		//globalMask.attr("visible",false);
 		this.destroy();
 	}
 });
