@@ -40,7 +40,7 @@ Crafty.c("SummonField", {
 		var spells = playingPlayer[this.owner].book.getValidSpells(this.manas.feature());
 		if ( this.menu )
 			this.menu.onDie();
-		if ( spells.length ) {
+		if ( spells.length || this.manas.length === 5) {
 			this.menu = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenu")
 				.summonMenu({
 					spells: spells,
@@ -51,19 +51,13 @@ Crafty.c("SummonField", {
 			this.showingMenu = false;
 		}
 	},
-	summonCreature:function(creatureSpell){
-		var len = this.manas.length;
-		for ( var i=0; i<len ; i++ )
-			this.manas.pop().destroy();
+	summonCreature:function(creatureSpell){		
 		var creature = new Creature({x:this.x+50,y:this.y,z:2,owner:this.owner,spell:creatureSpell});
 		var battleField = window.battleField[this.index][0];
 		ChipEntities[creature.cid] = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Chip, Creature,"+creatureSpell.get("name"))
 				.chip({model: creature}).creature({model: creature, index:this.index});
 	},
 	castSorcery:function(spell){
-		var len = this.manas.length;
-		for ( var i=0; i<len ; i++ )
-			this.manas.pop().destroy();
 		Crafty.e("2D, "+gameContainer.conf.get('renderType')+", Sorcery,"+spell.get("name"))
 				.attr({x:this.x+50,y:this.y+40,z:2,owner:this.owner})
 				.cast({spell: spell});
@@ -133,7 +127,12 @@ Crafty.c("SummonMenuItem", {
 		if ( window.isDragging )
 			return;
 		this.menu.onDie();
-		if ( this.spell.get("type") == "creature" )	{
+		var len = this.summonField.manas.length;
+		for ( var i=0; i<len ; i++ )
+			this.summonField.manas.pop().destroy();
+		if ( this.spell === null ) {
+			
+		} else if ( this.spell.get("type") == "creature" )	{
 			this.summonField.summonCreature(this.spell);
 		} else if ( this.spell.get("type") == "sorcery" ){
 			this.summonField.castSorcery(this.spell);
@@ -159,29 +158,45 @@ Crafty.c("SummonMenu", {
 	},
 	summonMenu:function(options){
 		this.spells = options.spells;
-		if ( !this.spells.length )
-			return;
+		
 		this.summonField = options.summonField;
 		this.spellMenuItems = [];
-
-		var left = this.summonField.x + this.summonField.w/2-(this.spells.length/2)*66;
+		
 		var top = this.summonField.y + this.summonField.h/2 - 55 ;
-		_.each( this.spells, function(spell){
-			var item = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenuItem, MouseHoverTips, Menu-"+spell.get("name"))
-				.summonMenuItem({
-					spell:spell,
-					menu:this,
-					summonField:options.summonField
-				})
-				.attr({
-					x:left,
-					y:top,
-					z:101,
-					title:spell.get("label")
-				});
+		if ( this.spells.length ) {
+			var left = this.summonField.x + this.summonField.w/2-(this.spells.length/2)*66;
+			_.each( this.spells, function(spell){
+				var item = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenuItem, MouseHoverTips, Menu-"+spell.get("name"))
+					.summonMenuItem({
+						spell:spell,
+						menu:this,
+						summonField:options.summonField
+					})
+					.attr({
+						x:left,
+						y:top,
+						z:101,
+						title:spell.get("label")
+					});
+				this.spellMenuItems.push(item);
+				left += 66;
+			},this);
+		} else {
+			var left = this.summonField.x + this.summonField.w/2-(1/2)*66;
+			var item = Crafty.e("2D, "+gameContainer.conf.get('renderType')+", SummonMenuItem, MouseHoverTips, Menu-Discard-All")
+			.summonMenuItem({
+				spell:null,
+				menu:this,
+				summonField:options.summonField
+			})
+			.attr({
+				x:left,
+				y:top,
+				z:101,
+				title:"清空法力"
+			});
 			this.spellMenuItems.push(item);
-			left += 66;
-		},this);
+		}
 		/*globalMask.attr("visible",true);
 		var self = this;
 		Crafty.bind("global-mask-clicked",function(){

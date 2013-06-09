@@ -150,6 +150,14 @@ Sprites = Backbone.Model.extend({
 					'hand-limit-icon' : [0, 0]
 				}
 			},
+			"MenuDiscardAll":{
+				'file' : 'web/images/discard-all.png',
+				'tile' : 60,
+				'tileh' : 60,
+				'elements': {
+					'Menu-Discard-All' : [0, 0]
+				}
+			},
 /*			"treasureHoard":{
 				'file' : 'web/images/treasure-hoard.png',
 				'tile' : 160,
