@@ -21,6 +21,8 @@ Crafty.c("Creature", {
 	},
 	_onHitEnemy:function(hit){
 		var opponent = hit[0].obj;
+		if ( !opponent.model.get("hp") || !this.model.get("hp") )
+			return;
 		var d = 1;
 		if ( this.model.getAttackType() === "melee"){
 			opponent.takeDamage( this.attack(), "melee", this.damageType() );
@@ -106,6 +108,8 @@ Crafty.c("Creature", {
 		return this.model.takeDamage(amount,attackType,damageType)
 	},
 	onCreatureDie:function(){
+		console.log("onCreatureDie");
+		this.removeComponent("Collision");
 		this.attIconEntity.destroy();
 		this.attEntity.destroy();
 		this.hpIconEntity.destroy();
